@@ -36,10 +36,14 @@ public class RSSParser {
     private static String TAG_DESCRIPTION = "description";
     private static String TAG_LANGUAGE = "language";
     private static String TAG_ITEM = "item";
-    private static String TAG_PUB_DATE = "lastBuildDate";
+//    private static String TAG_PUB_DATE = "lastBuildDate";
     private static String TAG_GUID = "guid";
     private static String TAG_NAMESPACE = "http://schemas.trumba.com/rss/x-trumba";
     private static String TAG_CUSTOM_FIELD = "customfield";
+    private static String TAG_DATE_TIME = "formatteddatetime";
+    private static String TAG_ADDRESS = "Venue address";
+//    private static String TAG_DATE = "formatteddatetime";
+    private static String TAG_IMAGE = "Event image";
 
     // constructor
     public RSSParser() {
@@ -127,14 +131,28 @@ public class RSSParser {
 
                     String title = this.getValue(e1, TAG_TITLE);
                     String link = this.getValue(e1, TAG_LINK);
-                    String description = this.getValue(e1, TAG_DESCRIPTION);
-                    String pubdate = this.getValue(e1, TAG_PUB_DATE);
+//                    String description = this.getValue(e1, TAG_DESCRIPTION);
+//                    String pubdate = this.getValue(e1, TAG_PUB_DATE);
                     String guid = this.getValue(e1, TAG_GUID);
 
                     NodeList customFields = e1.getElementsByTagNameNS(TAG_NAMESPACE, TAG_CUSTOM_FIELD);
-                    String image = customFields.item(3).getChildNodes().item(0).getNodeValue();
+                    NodeList datetime = e1.getElementsByTagNameNS(TAG_NAMESPACE, TAG_DATE_TIME);
+                    String address = "";
+                    String image = "";
+                    String date = datetime.item(0).getChildNodes().item(0).getNodeValue();
+                    for (int j = 0; j < customFields.getLength(); j++) {
+                        Element e2 = (Element) customFields.item(j);
+                        if (e2.getAttributes().getNamedItem("name").getNodeValue().equals(TAG_ADDRESS)) {
+                            address = e2.getChildNodes().item(0).getNodeValue();
+                        }
 
-                    RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid, image);
+                        if (e2.getAttributes().getNamedItem("name").getNodeValue().equals(TAG_IMAGE)) {
+                            image = e2.getChildNodes().item(0).getNodeValue();
+                        }
+
+                    }
+
+                    RSSItem rssItem = new RSSItem(title, link, address, date, guid, image);
 
                     // adding item to list
                     itemsList.add(rssItem);

@@ -3,8 +3,15 @@ package com.jonathancromie.brisbaneevents;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -13,6 +20,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +31,7 @@ import java.util.List;
 /**
  * Created by Jonathan on 18-Feb-16.
  */
-public class ListRSSItemsActivity extends ListActivity {
+public class ListRSSItemsActivity extends AppCompatActivity {
     // Progress Dialog
     private ProgressDialog pDialog;
 
@@ -35,21 +46,39 @@ public class ListRSSItemsActivity extends ListActivity {
 
     private static String TAG_TITLE = "title";
     private static String TAG_LINK = "link";
-    private static String TAG_DESRIPTION = "description";
-    private static String TAG_PUB_DATE = "lastBuildDate";
+    private static String TAG_ADDRESS = "address";
+    private static String TAG_DATE = "date";
+//    private static String TAG_DESRIPTION = "description";
+//    private static String TAG_PUB_DATE = "lastBuildDate";
     private static String TAG_GUID = "guid"; // not used
     private static String TAG_IMAGE = "image"; // not used
+
+    private String title;
+
+    ListView lv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rss_item_list);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
         // get intent data
         Intent i = getIntent();
 
         // SQLite Row id
         Integer site_id = Integer.parseInt(i.getStringExtra("id"));
+
+        // Title
+        title = i.getStringExtra("title");
+
+        setTitle(title);
 
         // Getting Single website from SQLite
         RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getApplicationContext());
@@ -64,22 +93,28 @@ public class ListRSSItemsActivity extends ListActivity {
         new loadRSSFeedItems().execute(rss_link);
 
         // selecting single ListView item
-        ListView lv = getListView();
-
+//        ListView lv = getListView();
+        lv = (ListView) findViewById(R.id.list);
         // Launching new screen on Selecting Single ListItem
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Intent in = new Intent(getApplicationContext(), DisplayWebPageActivity.class);
-
-                // getting page url
+                                    int position, long id) {//
+//                // getting page url
                 String page_url = ((TextView) view.findViewById(R.id.page_url)).getText().toString();
-                Toast.makeText(getApplicationContext(), page_url, Toast.LENGTH_SHORT).show();
-                in.putExtra("page_url", page_url);
+                Intent in = new Intent(Intent.ACTION_VIEW);
+                in.setData(Uri.parse(page_url));
                 startActivity(in);
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -95,7 +130,7 @@ public class ListRSSItemsActivity extends ListActivity {
             super.onPreExecute();
             pDialog = new ProgressDialog(
                     ListRSSItemsActivity.this);
-            pDialog.setMessage("Loading recent articles...");
+            pDialog.setMessage("Loading " + title);
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -120,14 +155,8 @@ public class ListRSSItemsActivity extends ListActivity {
                 // adding each child node to HashMap key => value
                 map.put(TAG_TITLE, item.getTitle());
                 map.put(TAG_LINK, item.getLink());
-                map.put(TAG_PUB_DATE, item.getPubdate());
-                String description = item.getDescription();
-                // taking only 200 chars from description
-                if(description.length() > 100){
-                    description = description.substring(0, 97) + "..";
-                }
-                map.put(TAG_DESRIPTION, description);
-
+                map.put(TAG_ADDRESS, item.getAddress());
+                map.put(TAG_DATE, item.getDate());
                 map.put(TAG_IMAGE, item.getImage());
 
                 // adding HashList to ArrayList
@@ -140,14 +169,14 @@ public class ListRSSItemsActivity extends ListActivity {
                     /**
                      * Updating parsed items into listview
                      * */
-                    ListAdapter adapter = new SimpleAdapter(
+                    CustomListAdapter adapter = new CustomListAdapter(
                             ListRSSItemsActivity.this,
                             rssItemList, R.layout.rss_item_list_row,
-                            new String[] { TAG_LINK, TAG_TITLE, TAG_PUB_DATE, TAG_DESRIPTION, TAG_IMAGE },
-                            new int[] { R.id.page_url, R.id.title, R.id.pub_date, R.id.link, R.id.image });
-
-                    // updating listview
-                    setListAdapter(adapter);
+                            new String[] { TAG_LINK, TAG_TITLE, TAG_ADDRESS, TAG_DATE, TAG_IMAGE },
+                            new int[] { R.id.page_url, R.id.title, R.id.address, R.id.date, R.id.image });
+//
+//                    // updating listview
+                    lv.setAdapter(adapter);
                 }
             });
             return null;

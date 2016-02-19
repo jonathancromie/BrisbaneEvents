@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -82,10 +85,12 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // getting values from selected ListItem
                 String sqlite_id = ((TextView) view.findViewById(R.id.sqlite_id)).getText().toString();
+                String title = ((TextView) view.findViewById(R.id.title)).getText().toString();
                 // Starting new intent
                 Intent in = new Intent(getApplicationContext(), ListRSSItemsActivity.class);
                 // passing sqlite row id
                 in.putExtra(TAG_ID, sqlite_id);
+                in.putExtra(TAG_TITLE, title);
                 startActivity(in);
             }
         });
@@ -144,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPreExecute();
             pDialog = new ProgressDialog(
                     MainActivity.this);
-            pDialog.setMessage("Loading websites ...");
+            pDialog.setMessage("Loading events ...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -193,8 +198,8 @@ public class MainActivity extends AppCompatActivity {
                             "http://www.trumba.com/calendars/mob.rss", ""));
                     rssDb.addSite(new Website("LIVE program events", "http://www.brisbane.qld.gov.au/whats-on/type/live",
                             "http://www.trumba.com/calendars/LIVE.rss", ""));
-//                    rssDb.addSite(new Website("King George Square events", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
-//                            "http://www.trumba.com/calendars/type.rss?filterview=Fitness&mixin=688783%2c681701%2c782935%2c812762", ""));
+                    rssDb.addSite(new Website("King George Square events", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
+                            "http://www.trumba.com/calendars/type.rss?filterview=Fitness&mixin=688783%2c681701%2c782935%2c812762", ""));
                     rssDb.addSite(new Website("Kids aged 6 to 12 events", "http://www.brisbane.qld.gov.au/whats-on/featured/school-holiday-activities-for-kids",
                             "http://www.trumba.com/calendars/brisbane-kids.rss?filterview=kids_6_12", ""));
                     rssDb.addSite(new Website("Infants and toddlers events", "http://www.brisbane.qld.gov.au/whats-on/featured/school-holiday-activities-for-kids",

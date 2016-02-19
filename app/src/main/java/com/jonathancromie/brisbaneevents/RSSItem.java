@@ -8,8 +8,8 @@ public class RSSItem {
     // All <item> node name
     String _title;
     String _link;
-    String _description;
-    String _pubdate;
+    String _address;
+    String _date;
     String _guid;
     String _image;
 
@@ -19,11 +19,11 @@ public class RSSItem {
     }
 
     // constructor with parameters
-    public RSSItem(String title, String link, String description, String pubdate, String guid, String image){
+    public RSSItem(String title, String link, String address, String date, String guid, String image){
         this._title = title;
         this._link = link;
-        this._description = description;
-        this._pubdate = pubdate;
+        this._address = address;
+        this._date = date;
         this._guid = guid;
         this._image = image;
     }
@@ -39,12 +39,12 @@ public class RSSItem {
         this._link = link;
     }
 
-    public void setDescription(String description){
-        this._description = description;
+    public void setAddress(String address){
+        this._address = address;
     }
 
-    public void setPubdate(String pubDate){
-        this._pubdate = pubDate;
+    public void setDate(String date){
+        this._date = date;
     }
 
 
@@ -67,12 +67,12 @@ public class RSSItem {
         return this._link;
     }
 
-    public String getDescription(){
-        return this._description;
+    public String getAddress(){
+        return this._address;
     }
 
-    public String getPubdate(){
-        return this._pubdate;
+    public String getDate(){
+        return this._date;
     }
 
     public String getGuid(){
