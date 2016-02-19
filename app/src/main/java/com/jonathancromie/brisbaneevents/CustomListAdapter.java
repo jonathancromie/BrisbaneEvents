@@ -54,16 +54,19 @@ public class CustomListAdapter extends SimpleAdapter {
 
         HashMap<String, Object> data = (HashMap<String, Object>) getItem(position);
         ImageView imageView = (ImageView)vi.findViewById(R.id.imageView);
+        TextView textLink = (TextView)vi.findViewById(R.id.page_url);
         TextView textTitle = (TextView)vi.findViewById(R.id.title);
         TextView textAddress = (TextView)vi.findViewById(R.id.address);
         TextView textDate = (TextView)vi.findViewById(R.id.date);
 
+        String link = (String) data.get("link");
         String title = (String) data.get("title");
         String address = (String) data.get("address");
         String date = (String) data.get("date");
         String image = (String) data.get("image");
 
 
+        textLink.setText(link);
         textTitle.setText(title);
         textAddress.setText(address);
         textDate.setText(date);
