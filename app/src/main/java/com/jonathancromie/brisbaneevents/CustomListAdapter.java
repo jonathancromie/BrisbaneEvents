@@ -71,7 +71,7 @@ public class CustomListAdapter extends SimpleAdapter {
         textAddress.setText(address);
         textDate.setText(date);
 
-        Picasso.with(mContext).load(image).placeholder(R.drawable.ic_photo_camera_black_24dp).error(R.drawable.ic_photo_camera_black_24dp).into(imageView);
+        Picasso.with(mContext).load(image).resize(75, 75).placeholder(R.drawable.ic_photo_camera_black_24dp).error(R.drawable.ic_photo_camera_black_24dp).into(imageView);
 
         return vi;
     }

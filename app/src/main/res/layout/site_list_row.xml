@@ -19,7 +19,8 @@
         android:paddingBottom="1dip"
         android:textSize="18dip"
         android:textStyle="bold"
-        android:textColor="#303030" />
+        android:textColor="#303030"
+        android:layout_margin="8dp" />
 
     <!-- web site description -->
     <TextView
@@ -32,7 +33,10 @@
         android:textSize="18dip"
         android:layout_below="@+id/title"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp" />
 
     <!-- web site url -->
 
