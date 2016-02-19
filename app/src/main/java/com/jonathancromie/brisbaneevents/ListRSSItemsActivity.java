@@ -36,8 +36,9 @@ public class ListRSSItemsActivity extends ListActivity {
     private static String TAG_TITLE = "title";
     private static String TAG_LINK = "link";
     private static String TAG_DESRIPTION = "description";
-    private static String TAG_PUB_DATE = "pubDate";
+    private static String TAG_PUB_DATE = "lastBuildDate";
     private static String TAG_GUID = "guid"; // not used
+    private static String TAG_IMAGE = "image"; // not used
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,6 +128,8 @@ public class ListRSSItemsActivity extends ListActivity {
                 }
                 map.put(TAG_DESRIPTION, description);
 
+                map.put(TAG_IMAGE, item.getImage());
+
                 // adding HashList to ArrayList
                 rssItemList.add(map);
             }
@@ -140,8 +143,8 @@ public class ListRSSItemsActivity extends ListActivity {
                     ListAdapter adapter = new SimpleAdapter(
                             ListRSSItemsActivity.this,
                             rssItemList, R.layout.rss_item_list_row,
-                            new String[] { TAG_LINK, TAG_TITLE, TAG_PUB_DATE, TAG_DESRIPTION },
-                            new int[] { R.id.page_url, R.id.title, R.id.pub_date, R.id.link });
+                            new String[] { TAG_LINK, TAG_TITLE, TAG_PUB_DATE, TAG_DESRIPTION, TAG_IMAGE },
+                            new int[] { R.id.page_url, R.id.title, R.id.pub_date, R.id.link, R.id.image });
 
                     // updating listview
                     setListAdapter(adapter);

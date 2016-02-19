@@ -33,11 +33,13 @@ public class RSSParser {
     private static String TAG_CHANNEL = "channel";
     private static String TAG_TITLE = "title";
     private static String TAG_LINK = "link";
-    private static String TAG_DESRIPTION = "description";
+    private static String TAG_DESCRIPTION = "description";
     private static String TAG_LANGUAGE = "language";
     private static String TAG_ITEM = "item";
     private static String TAG_PUB_DATE = "lastBuildDate";
     private static String TAG_GUID = "guid";
+    private static String TAG_NAMESPACE = "http://schemas.trumba.com/rss/x-trumba";
+    private static String TAG_CUSTOM_FIELD = "customfield";
 
     // constructor
     public RSSParser() {
@@ -74,7 +76,7 @@ public class RSSParser {
                     // RSS nodes
                     String title = this.getValue(e, TAG_TITLE);
                     String link = this.getValue(e, TAG_LINK);
-                    String description = this.getValue(e, TAG_DESRIPTION);
+                    String description = this.getValue(e, TAG_DESCRIPTION);
                     String language = this.getValue(e, TAG_LANGUAGE);
 
                     // Creating new RSS Feed
@@ -115,6 +117,7 @@ public class RSSParser {
                 NodeList nodeList = doc.getElementsByTagName(TAG_CHANNEL);
                 Element e = (Element) nodeList.item(0);
 
+
                 // Getting items array
                 NodeList items = e.getElementsByTagName(TAG_ITEM);
 
@@ -124,11 +127,14 @@ public class RSSParser {
 
                     String title = this.getValue(e1, TAG_TITLE);
                     String link = this.getValue(e1, TAG_LINK);
-                    String description = this.getValue(e1, TAG_DESRIPTION);
+                    String description = this.getValue(e1, TAG_DESCRIPTION);
                     String pubdate = this.getValue(e1, TAG_PUB_DATE);
                     String guid = this.getValue(e1, TAG_GUID);
 
-                    RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid);
+                    NodeList customFields = e1.getElementsByTagNameNS(TAG_NAMESPACE, TAG_CUSTOM_FIELD);
+                    String image = customFields.item(3).getChildNodes().item(0).getNodeValue();
+
+                    RSSItem rssItem = new RSSItem(title, link, description, pubdate, guid, image);
 
                     // adding item to list
                     itemsList.add(rssItem);
@@ -217,6 +223,7 @@ public class RSSParser {
         Document doc = null;
         xml = xml.replaceAll("[^\\x20-\\x7e]", "");
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
         try {
 
             DocumentBuilder db = dbf.newDocumentBuilder();

@@ -11,6 +11,7 @@ public class RSSItem {
     String _description;
     String _pubdate;
     String _guid;
+    String _image;
 
     // constructor
     public RSSItem(){
@@ -18,12 +19,13 @@ public class RSSItem {
     }
 
     // constructor with parameters
-    public RSSItem(String title, String link, String description, String pubdate, String guid){
+    public RSSItem(String title, String link, String description, String pubdate, String guid, String image){
         this._title = title;
         this._link = link;
         this._description = description;
         this._pubdate = pubdate;
         this._guid = guid;
+        this._image = image;
     }
 
     /**
@@ -50,6 +52,10 @@ public class RSSItem {
         this._guid = guid;
     }
 
+    public void setImage(String image){
+        this._image = image;
+    }
+
     /**
      * All GET methods
      * */
@@ -71,5 +77,9 @@ public class RSSItem {
 
     public String getGuid(){
         return this._guid;
+    }
+
+    public String getImage(){
+        return this._image;
     }
 }

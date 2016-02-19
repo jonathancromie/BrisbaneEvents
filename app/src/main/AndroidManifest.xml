@@ -22,12 +22,15 @@
         </activity>
 
         <!-- List rss items Activity -->
-        <activity android:name=".ListRSSItemsActivity"
-            android:configChanges="keyboardHidden|orientation" />
 
         <!-- Display webpage Activity -->
-        <activity android:name=".DisplayWebPageActivity"
+        <activity
+            android:name=".DisplayWebPageActivity"
             android:configChanges="keyboardHidden|orientation" />
+        <activity
+            android:name=".ListRSSItemsActivity2"
+            android:label="@string/title_activity_list_rssitems2"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
