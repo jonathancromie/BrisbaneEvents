@@ -42,7 +42,7 @@ public class RSSParser {
     private static String TAG_CUSTOM_FIELD = "customfield";
     private static String TAG_DATE_TIME = "formatteddatetime";
     private static String TAG_ADDRESS = "Venue address";
-//    private static String TAG_DATE = "formatteddatetime";
+    private static String TAG_BOOKING = "Bookings";
     private static String TAG_IMAGE = "Event image";
 
     // constructor
@@ -138,6 +138,7 @@ public class RSSParser {
                     NodeList customFields = e1.getElementsByTagNameNS(TAG_NAMESPACE, TAG_CUSTOM_FIELD);
                     NodeList datetime = e1.getElementsByTagNameNS(TAG_NAMESPACE, TAG_DATE_TIME);
                     String address = "";
+                    String booking = "";
                     String image = "";
                     String date = datetime.item(0).getChildNodes().item(0).getNodeValue();
                     for (int j = 0; j < customFields.getLength(); j++) {
@@ -146,13 +147,17 @@ public class RSSParser {
                             address = e2.getChildNodes().item(0).getNodeValue();
                         }
 
+                        if (e2.getAttributes().getNamedItem("name").getNodeValue().equals(TAG_BOOKING)) {
+                            booking = e2.getChildNodes().item(0).getNodeValue();
+                        }
+
                         if (e2.getAttributes().getNamedItem("name").getNodeValue().equals(TAG_IMAGE)) {
                             image = e2.getChildNodes().item(0).getNodeValue();
                         }
 
                     }
 
-                    RSSItem rssItem = new RSSItem(title, link, address, date, guid, image);
+                    RSSItem rssItem = new RSSItem(title, link, address, date, booking, guid, image);
 
                     // adding item to list
                     itemsList.add(rssItem);

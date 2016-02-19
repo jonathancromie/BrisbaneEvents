@@ -22,6 +22,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,9 +56,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     /**
@@ -166,67 +169,65 @@ public class MainActivity extends AppCompatActivity {
                     RSSDatabaseHandler rssDb = new RSSDatabaseHandler(
                             getApplicationContext());
 
-                    rssDb.addSite(new Website("Fitness and strength events", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
+                    rssDb.addSite(new Website("Fitness and Strength", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
                             "http://www.trumba.com/calendars/type.rss?filterview=Fitness&mixin=688783%2c681701%2c782935%2c812762", ""));
-                    rssDb.addSite(new Website("Business events", "http://www.brisbane.qld.gov.au/planning-building/planning-guidelines-tools/neighbourhood-planning/neighbourhood-plans-other-local-planning-projects/spring-hill-neighbourhood-plan",
+                    rssDb.addSite(new Website("Business", "http://www.brisbane.qld.gov.au/planning-building/planning-guidelines-tools/neighbourhood-planning/neighbourhood-plans-other-local-planning-projects/spring-hill-neighbourhood-plan",
                             "http://www.trumba.com/calendars/BiB.rss", ""));
-                    rssDb.addSite(new Website("Music and concert events", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
+                    rssDb.addSite(new Website("Music and concert", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
                             "http://www.trumba.com/calendars/type.rss?filterview=Music&filter1=_178867_&filterfield1=21859", ""));
-                    rssDb.addSite(new Website("Brisbane Botanic Gardens events", "http://www.brisbane.qld.gov.au/facilities-recreation/parks-venues-brisbane/parks/brisbane-botanic-gardens-mt-coot-tha/whats-brisbane-botanic-gardens-mt-coot-tha",
+                    rssDb.addSite(new Website("Brisbane Botanic Gardens", "http://www.brisbane.qld.gov.au/facilities-recreation/parks-venues-brisbane/parks/brisbane-botanic-gardens-mt-coot-tha/whats-brisbane-botanic-gardens-mt-coot-tha",
                             "http://www.trumba.com/calendars/type.rss?filterview=Fitness&mixin=688783%2c681701%2c782935%2c812762", ""));
-                    rssDb.addSite(new Website("Fitness and strength events", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
-                            "http://www.trumba.com/calendars/brisbane-botanic-gardens.rss", ""));
-                    rssDb.addSite(new Website("Arts, crafts and culture events", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
+                    rssDb.addSite(new Website("Arts, Crafts and Culture", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
                             "http://www.trumba.com/calendars/type.rss?filterview=arts&filter1=_171831_178893_&filterfield1=21859", ""));
                     rssDb.addSite(new Website("Brisbane Markets", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
                             "http://www.trumba.com/calendars/type.rss?filterview=Markets&filter1=_178869_&filterfield1=21859", ""));
-                    rssDb.addSite(new Website("Library events", "http://www.brisbane.qld.gov.au/whats-on/venue/library-events",
+                    rssDb.addSite(new Website("Library", "http://www.brisbane.qld.gov.au/whats-on/venue/library-events",
                             "http://www.trumba.com/calendars/libraries.rss", ""));
                     rssDb.addSite(new Website("Movies", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
                             "http://www.trumba.com/calendars/type.rss?filterview=movies&filter1=_178865_&filterfield1=21859", ""));
-                    rssDb.addSite(new Website("Visible Ink events", "http://www.brisbane.qld.gov.au/whats-on/venue/visible-ink-events",
+                    rssDb.addSite(new Website("Visible Ink", "http://www.brisbane.qld.gov.au/whats-on/venue/visible-ink-events",
                             "http://www.trumba.com/calendars/visble-ink.rss", ""));
-                    rssDb.addSite(new Website("Teen events", "http://www.brisbane.qld.gov.au/whats-on/featured/school-holiday-activities-for-kids",
+                    rssDb.addSite(new Website("Teen", "http://www.brisbane.qld.gov.au/whats-on/featured/school-holiday-activities-for-kids",
                             "http://www.trumba.com/calendars/brisbane-kids.rss?filterview=teens", ""));
-                    rssDb.addSite(new Website("Southbank Parklands events", "http://www.brisbane.qld.gov.au/whats-brisbane/events-council-venues/parks-gardens-events/south-bank-parklands-events",
+                    rssDb.addSite(new Website("Southbank Parklands", "http://www.brisbane.qld.gov.au/whats-brisbane/events-council-venues/parks-gardens-events/south-bank-parklands-events",
                             "http://www.trumba.com/calendars/south-bank.rss?filterview=south+bank&filter4=_464155_&filterfield4=22542", ""));
-                    rssDb.addSite(new Website("Sir Thomas Brisbane Planetarium events", "http://www.brisbane.qld.gov.au/facilities-recreation/arts-culture/sir-thomas-brisbane-planetarium/whats-on-at-the-planetarium",
+                    rssDb.addSite(new Website("Sir Thomas Brisbane Planetarium", "http://www.brisbane.qld.gov.au/facilities-recreation/arts-culture/sir-thomas-brisbane-planetarium/whats-on-at-the-planetarium",
                             "http://www.trumba.com/calendars/planetarium.rss", ""));
-                    rssDb.addSite(new Website("Riverstage events", "http://www.brisbane.qld.gov.au/facilities-recreation/arts-culture/riverstage/whats-riverstage",
+                    rssDb.addSite(new Website("Riverstage", "http://www.brisbane.qld.gov.au/facilities-recreation/arts-culture/riverstage/whats-riverstage",
                             "http://www.trumba.com/calendars/brisbane-riverstage.rss", ""));
-                    rssDb.addSite(new Website("Museum of Brisbane events", "http://www.brisbane.qld.gov.au/whats-on/venue/museum-of-brisbane",
+                    rssDb.addSite(new Website("Museum of Brisbane", "http://www.brisbane.qld.gov.au/whats-on/venue/museum-of-brisbane",
                             "http://www.trumba.com/calendars/mob.rss", ""));
-                    rssDb.addSite(new Website("LIVE program events", "http://www.brisbane.qld.gov.au/whats-on/type/live",
+                    rssDb.addSite(new Website("LIVE program", "http://www.brisbane.qld.gov.au/whats-on/type/live",
                             "http://www.trumba.com/calendars/LIVE.rss", ""));
-                    rssDb.addSite(new Website("King George Square events", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
+                    rssDb.addSite(new Website("King George Square", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
                             "http://www.trumba.com/calendars/type.rss?filterview=Fitness&mixin=688783%2c681701%2c782935%2c812762", ""));
-                    rssDb.addSite(new Website("Kids aged 6 to 12 events", "http://www.brisbane.qld.gov.au/whats-on/featured/school-holiday-activities-for-kids",
+                    rssDb.addSite(new Website("Kids Aged 6 to 12", "http://www.brisbane.qld.gov.au/whats-on/featured/school-holiday-activities-for-kids",
                             "http://www.trumba.com/calendars/brisbane-kids.rss?filterview=kids_6_12", ""));
-                    rssDb.addSite(new Website("Infants and toddlers events", "http://www.brisbane.qld.gov.au/whats-on/featured/school-holiday-activities-for-kids",
+                    rssDb.addSite(new Website("Infants and toddlers", "http://www.brisbane.qld.gov.au/whats-on/featured/school-holiday-activities-for-kids",
                             "http://www.trumba.com/calendars/brisbane-kids.rss?filterview=infants_toddlers", ""));
-                    rssDb.addSite(new Website("Green events", "http://www.brisbane.qld.gov.au/whats-on/type/green-events",
+                    rssDb.addSite(new Website("Green", "http://www.brisbane.qld.gov.au/whats-on/type/green-events",
                             "http://www.trumba.com/calendars/green-events.rss?filterview=green_events", ""));
-                    rssDb.addSite(new Website("GOLD program events", "http://www.brisbane.qld.gov.au/whats-on/events-listed-type/sports-recreation-programs/growing-older-living-dangerously",
+                    rssDb.addSite(new Website("GOLD program", "http://www.brisbane.qld.gov.au/whats-on/events-listed-type/sports-recreation-programs/growing-older-living-dangerously",
                             "http://www.trumba.com/calendars/gold.rss?filterview=gold", ""));
-                    rssDb.addSite(new Website("GOLD n' Kids events", "http://www.brisbane.qld.gov.au/whats-on/events-listed-type/sports-recreation-programs/gold-n-kids",
+                    rssDb.addSite(new Website("GOLD n' Kids", "http://www.brisbane.qld.gov.au/whats-on/events-listed-type/sports-recreation-programs/gold-n-kids",
                             "http://www.trumba.com/calendars/gold-n-kids.rss", ""));
                     rssDb.addSite(new Website("Festivals", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
                             "http://www.trumba.com/calendars/type.rss?filterview=festivals&filter1=_178868_&filterfield1=21859", ""));
-                    rssDb.addSite(new Website("Family events", "http://www.brisbane.qld.gov.au/whats-on/audience/youth-events",
+                    rssDb.addSite(new Website("Family", "http://www.brisbane.qld.gov.au/whats-on/audience/youth-events",
                             "http://www.trumba.com/calendars/audience-brisbane.rss?filterview=family&filter1=_178891_&filterfield1=21859", ""));
-                    rssDb.addSite(new Website("Chill Out events", "http://www.brisbane.qld.gov.au/whats-on/events-listed-type/sports-recreation-programs/chill-out",
+                    rssDb.addSite(new Website("Chill Out", "http://www.brisbane.qld.gov.au/whats-on/events-listed-type/sports-recreation-programs/chill-out",
                             "http://www.trumba.com/calendars/chill-out.rss", ""));
-                    rssDb.addSite(new Website("Brisbane Powerhouse events", "http://www.brisbane.qld.gov.au/whats-on/venue/brisbane-powerhouse",
+                    rssDb.addSite(new Website("Brisbane Powerhouse", "http://www.brisbane.qld.gov.au/whats-on/venue/brisbane-powerhouse",
                             "http://www.trumba.com/calendars/brisbane-powerhouse.rss", ""));
-                    rssDb.addSite(new Website("Brisbane Parks events", "http://www.trumba.com/calendars/brisbane-events-rss",
+                    rssDb.addSite(new Website("Brisbane Parks", "http://www.trumba.com/calendars/brisbane-events-rss",
                             "http://www.trumba.com/calendars/brisbane-events-rss.rss?filterview=parks", ""));
-                    rssDb.addSite(new Website("Brisbane City Council events", "http://www.brisbane.qld.gov.au/whats-on",
+                    rssDb.addSite(new Website("Brisbane City Council", "http://www.brisbane.qld.gov.au/whats-on",
                             "http://www.trumba.com/calendars/brisbane-city-council.rss", "Brisbane City Council runs a range of classes, workshops, activities and events in Brisbane. Use our what's on calendar to search for concerts, sports and fitness, green events, markets, arts, culture, craft and more. Find out what's on today, this week and next month."));
-                    rssDb.addSite(new Website("Classes and workshops", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
+                    rssDb.addSite(new Website("Classes and Workshops", "http://www.brisbane.qld.gov.au/whats-on/featured/Events-in-Brisbane/index.htm",
                             "http://www.trumba.com/calendars/type.rss?filterview=classses", ""));
-                    rssDb.addSite(new Website("City Hall events", "http://www.brisbane.qld.gov.au/facilities-recreation/parks-venues/brisbane-city-hall/whats-on-city-hall",
+                    rssDb.addSite(new Website("City Hall", "http://www.brisbane.qld.gov.au/facilities-recreation/parks-venues/brisbane-city-hall/whats-on-city-hall",
                             "http://www.trumba.com/calendars/city-hall.rss?filterview=city-hall&filter4=_266279_&filterfield4=22542", ""));
-                    rssDb.addSite(new Website("Active parks events", "http://www.brisbane.qld.gov.au/whats-on/events-listed-type/sports-recreation-programs/active-parks-events",
+                    rssDb.addSite(new Website("Active Parks", "http://www.brisbane.qld.gov.au/whats-on/events-listed-type/sports-recreation-programs/active-parks-events",
                             "http://www.trumba.com/calendars/active-parks.rss", "Active Parks has exercise in Brisbane parks for all levels of ability. Get a great workout or relax with some gentle exercise. Try out recreational tree climbing, join in a boxing class, get fit with Zumba or get out on the water with kayaking."));
 
                     // listing all websites from SQLite

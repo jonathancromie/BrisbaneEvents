@@ -1,32 +1,25 @@
 package com.jonathancromie.brisbaneevents;
 
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 /**
  * Created by Jonathan on 18-Feb-16.
@@ -42,25 +35,21 @@ public class ListRSSItemsActivity extends AppCompatActivity {
 
     List<RSSItem> rssItems = new ArrayList<RSSItem>();
 
-    RSSFeed rssFeed;
-
     private static String TAG_TITLE = "title";
     private static String TAG_LINK = "link";
     private static String TAG_ADDRESS = "address";
     private static String TAG_DATE = "date";
-//    private static String TAG_DESRIPTION = "description";
-//    private static String TAG_PUB_DATE = "lastBuildDate";
+    private static String TAG_BOOKING = "booking";
     private static String TAG_GUID = "guid"; // not used
-    private static String TAG_IMAGE = "image"; // not used
+    private static String TAG_IMAGE = "image";
 
     private String title;
 
-    ListView lv;
-
+    private RecyclerView recyclerView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.rss_item_list);
+        setContentView(R.layout.activity_list_rss_items);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -92,21 +81,15 @@ public class ListRSSItemsActivity extends AppCompatActivity {
          * */
         new loadRSSFeedItems().execute(rss_link);
 
-        // selecting single ListView item
-//        ListView lv = getListView();
-        lv = (ListView) findViewById(R.id.list);
-        // Launching new screen on Selecting Single ListItem
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {//
-//                // getting page url
-                String page_url = ((TextView) view.findViewById(R.id.page_url)).getText().toString();
-                Intent in = new Intent(Intent.ACTION_VIEW);
-                in.setData(Uri.parse(page_url));
-                startActivity(in);
-            }
-        });
+
+    }
+
+    private List<RSSItem> getDataSet() {
+        return rssItems;
     }
 
     @Override
@@ -157,6 +140,7 @@ public class ListRSSItemsActivity extends AppCompatActivity {
                 map.put(TAG_LINK, item.getLink());
                 map.put(TAG_ADDRESS, item.getAddress());
                 map.put(TAG_DATE, item.getDate());
+                map.put(TAG_BOOKING, item.getBooking());
                 map.put(TAG_IMAGE, item.getImage());
 
                 // adding HashList to ArrayList
@@ -166,17 +150,12 @@ public class ListRSSItemsActivity extends AppCompatActivity {
             // updating UI from Background Thread
             runOnUiThread(new Runnable() {
                 public void run() {
-                    /**
-                     * Updating parsed items into listview
-                     * */
-                    CustomListAdapter adapter = new CustomListAdapter(
-                            ListRSSItemsActivity.this,
-                            rssItemList, R.layout.rss_item_list_row,
-                            new String[] { TAG_LINK, TAG_TITLE, TAG_ADDRESS, TAG_DATE, TAG_IMAGE },
-                            new int[] { R.id.page_url, R.id.title, R.id.address, R.id.date, R.id.image });
-//
-//                    // updating listview
-                    lv.setAdapter(adapter);
+                    recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    recyclerView.setAdapter(new CustomAdapter(getDataSet()));
+                    RecyclerView.ItemDecoration itemDecoration =
+                            new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL);
+                    recyclerView.addItemDecoration(itemDecoration);
                 }
             });
             return null;

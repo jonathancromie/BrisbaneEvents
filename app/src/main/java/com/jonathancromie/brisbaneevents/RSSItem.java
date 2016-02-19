@@ -10,6 +10,7 @@ public class RSSItem {
     String _link;
     String _address;
     String _date;
+    String _booking;
     String _guid;
     String _image;
 
@@ -19,11 +20,12 @@ public class RSSItem {
     }
 
     // constructor with parameters
-    public RSSItem(String title, String link, String address, String date, String guid, String image){
+    public RSSItem(String title, String link, String address, String date, String booking, String guid, String image){
         this._title = title;
         this._link = link;
         this._address = address;
         this._date = date;
+        this._booking = booking;
         this._guid = guid;
         this._image = image;
     }
@@ -47,6 +49,9 @@ public class RSSItem {
         this._date = date;
     }
 
+    public void setBooking(String _booking) {
+        this._booking = _booking;
+    }
 
     public void setGuid(String guid){
         this._guid = guid;
@@ -73,6 +78,10 @@ public class RSSItem {
 
     public String getDate(){
         return this._date;
+    }
+
+    public String getBooking() {
+        return _booking;
     }
 
     public String getGuid(){

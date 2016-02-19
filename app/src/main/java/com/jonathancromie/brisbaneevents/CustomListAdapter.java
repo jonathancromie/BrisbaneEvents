@@ -52,17 +52,19 @@ public class CustomListAdapter extends SimpleAdapter {
         if(convertView==null)
             vi = inflater.inflate(R.layout.rss_item_list_row, null);
 
-        HashMap<String, Object> data = (HashMap<String, Object>) getItem(position);
+        HashMap<String, String> data = (HashMap<String, String>) getItem(position);
         ImageView imageView = (ImageView)vi.findViewById(R.id.imageView);
         TextView textLink = (TextView)vi.findViewById(R.id.page_url);
         TextView textTitle = (TextView)vi.findViewById(R.id.title);
         TextView textAddress = (TextView)vi.findViewById(R.id.address);
         TextView textDate = (TextView)vi.findViewById(R.id.date);
+        TextView textBooking = (TextView)vi.findViewById(R.id.booking);
 
         String link = (String) data.get("link");
         String title = (String) data.get("title");
         String address = (String) data.get("address");
         String date = (String) data.get("date");
+        String booking = (String) data.get("booking");
         String image = (String) data.get("image");
 
 
@@ -70,6 +72,7 @@ public class CustomListAdapter extends SimpleAdapter {
         textTitle.setText(title);
         textAddress.setText(address);
         textDate.setText(date);
+        textBooking.setText(booking);
 
         Picasso.with(mContext).load(image).resize(75, 75).placeholder(R.drawable.ic_photo_camera_black_24dp).error(R.drawable.ic_photo_camera_black_24dp).into(imageView);
 
