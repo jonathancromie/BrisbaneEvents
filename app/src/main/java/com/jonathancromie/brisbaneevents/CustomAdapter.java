@@ -2,6 +2,7 @@ package com.jonathancromie.brisbaneevents;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +70,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.DataObject
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         Context context = holder.imageView.getContext();
+
         Picasso.with(context).load(mDataset.get(position).getImage()).resize(75, 75).placeholder(R.drawable.ic_photo_camera_black_24dp).error(R.drawable.ic_photo_camera_black_24dp).into(holder.imageView);
         holder.textLink.setText(mDataset.get(position).getLink());
         holder.textTitle.setText(mDataset.get(position).getTitle());

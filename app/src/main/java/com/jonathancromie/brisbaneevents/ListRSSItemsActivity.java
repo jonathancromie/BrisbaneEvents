@@ -153,9 +153,6 @@ public class ListRSSItemsActivity extends AppCompatActivity {
                     recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     recyclerView.setAdapter(new CustomAdapter(getDataSet()));
-                    RecyclerView.ItemDecoration itemDecoration =
-                            new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL);
-                    recyclerView.addItemDecoration(itemDecoration);
                 }
             });
             return null;
