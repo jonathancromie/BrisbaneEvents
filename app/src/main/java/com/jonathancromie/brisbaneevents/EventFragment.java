@@ -1,39 +1,22 @@
 package com.jonathancromie.brisbaneevents;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
-/**
- * Created by Jonathan on 18-Feb-16.
- */
-public class ListRSSItemsActivity extends AppCompatActivity {
-    // Progress Dialog
-    private ProgressDialog pDialog;
 
-    // Array list for list view
-    ArrayList<HashMap<String, String>> rssItemList = new ArrayList<HashMap<String,String>>();
-
-    RSSParser rssParser = new RSSParser();
-
-    List<RSSItem> rssItems = new ArrayList<RSSItem>();
+public class EventFragment extends Fragment {
+    public static final String ARG_PAGE = "ARG_PAGE";
 
     private static String TAG_TITLE = "title";
     private static String TAG_LINK = "link";
@@ -43,61 +26,61 @@ public class ListRSSItemsActivity extends AppCompatActivity {
     private static String TAG_GUID = "guid"; // not used
     private static String TAG_IMAGE = "image";
 
-    private String title;
+    private int mPage;
 
-    private RecyclerView recyclerView;
+    // Array list for list view
+    ArrayList<HashMap<String, String>> rssItemList = new ArrayList<HashMap<String,String>>();
+
+    RSSParser rssParser = new RSSParser();
+
+    List<RSSItem> rssItems = new ArrayList<RSSItem>();
+
+    private RecyclerView mRecyclerView;
+
+    // Progress Dialog
+    private ProgressDialog pDialog;
+
+    public static EventFragment newInstance(int page) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_PAGE, page);
+        EventFragment fragment = new EventFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_rss_items);
+        mPage = getArguments().getInt(ARG_PAGE);
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_event, container, false);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-        // get intent data
-        Intent i = getIntent();
-
-        // SQLite Row id
-        Integer site_id = Integer.parseInt(i.getStringExtra("id"));
-
-        // Title
-        title = i.getStringExtra("title");
-
-        setTitle(title);
 
         // Getting Single website from SQLite
-        RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getApplicationContext());
+        RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getContext());
 
 
-        Website site = rssDB.getSite(site_id);
+        Website site = rssDB.getSite(mPage);
         String rss_link = site.getRSSLink();
-        /**
-         * Calling a backgroung thread will loads recent articles of a website
-         * @param rss url of website
-         * */
+//        /**
+//         * Calling a backgroung thread will loads recent articles of a website
+//         * @param rss url of website
+//         * */
         new loadRSSFeedItems().execute(rss_link);
 
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
 
 
+        return view;
     }
 
     private List<RSSItem> getDataSet() {
         return rssItems;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -111,9 +94,8 @@ public class ListRSSItemsActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(
-                    ListRSSItemsActivity.this);
-            pDialog.setMessage("Loading " + title);
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Loading events...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -147,14 +129,7 @@ public class ListRSSItemsActivity extends AppCompatActivity {
                 rssItemList.add(map);
             }
 
-            // updating UI from Background Thread
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    recyclerView.setAdapter(new CustomAdapter(getDataSet()));
-                }
-            });
+
             return null;
         }
 
@@ -164,6 +139,7 @@ public class ListRSSItemsActivity extends AppCompatActivity {
         protected void onPostExecute(String args) {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
+            mRecyclerView.setAdapter(new CustomListAdapter(getDataSet()));
         }
     }
 }

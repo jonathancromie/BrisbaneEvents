@@ -31,7 +31,10 @@
                 android:contentDescription="@string/event_image"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="8dp"
+                android:layout_alignParentRight="false"
+                android:layout_alignWithParentIfMissing="false"
+                android:layout_alignParentBottom="false" />
 
             <TextView
                 android:id="@+id/title"

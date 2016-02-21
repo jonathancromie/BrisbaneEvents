@@ -1,70 +1,51 @@
 package com.jonathancromie.brisbaneevents;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
+/**
+ * Created by jonathancromie on 20/02/2016.
+ */
 public class MainActivity extends AppCompatActivity {
-
-    // Progress Dialog
-    private ProgressDialog pDialog;
-
-    // Array list for list view
-    ArrayList<HashMap<String, String>> rssFeedList;
-
-    RSSParser rssParser = new RSSParser();
-
-    RSSFeed rssFeed;
-
-    // array to trace sqlite ids
-    String[] sqliteIds;
 
     public static String TAG_ID = "id";
     public static String TAG_TITLE = "title";
     public static String TAG_LINK = "link";
 
-    // List view
-//    ListView lv;
+    // Array list for list view
+    ArrayList<HashMap<String, String>> rssFeedList = new ArrayList<HashMap<String, String>>();
+
+    // array to trace sqlite ids
+    String[] sqliteIds;
+    // Progress Dialog
+    private ProgressDialog pDialog;
+
+    private CustomPagerAdapter adapter;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        initToolbar();
+        initViewPagerAndTabs();
 
-        // Hashmap for ListView
-        rssFeedList = new ArrayList<HashMap<String, String>>();
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
 
         /**
@@ -73,66 +54,26 @@ public class MainActivity extends AppCompatActivity {
          * */
         new loadStoreSites().execute();
 
-//        // selecting single ListView item
-//        lv = (ListView) findViewById(R.id.list);
-//        // Launching new screen on Selecting Single ListItem
-//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                // getting values from selected ListItem
-//                String sqlite_id = ((TextView) view.findViewById(R.id.sqlite_id)).getText().toString();
-//                String title = ((TextView) view.findViewById(R.id.title)).getText().toString();
-//                // Starting new intent
-//                Intent in = new Intent(getApplicationContext(), ListRSSItemsActivity.class);
-//                // passing sqlite row id
-//                in.putExtra(TAG_ID, sqlite_id);
-//                startActivity(in);
-//            }
-//        });
 
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+
+//        AdView mAdView = (AdView) findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequest);
     }
 
-    /**
-     * Response from AddNewSiteActivity.java
-     * if response is 100 means new site is added to sqlite
-     * reload this activity again to show
-     * newly added website in listview
-     * */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // if result code 100
-        if (resultCode == 100) {
-            // reload this screen again
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
-        }
+    private void initToolbar() {
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        setTitle(getString(R.string.app_name));
+        mToolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    private void initViewPagerAndTabs() {
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        adapter = new CustomPagerAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -250,20 +191,12 @@ public class MainActivity extends AppCompatActivity {
                         // add sqlite id to array
                         // used when deleting a website from sqlite
                         sqliteIds[i] = s.getId().toString();
+
+                        adapter.addFragment(EventFragment.newInstance(s.getId()), s.getTitle());
+
+
                     }
-                    /**
-                     * Updating list view with websites
-                     * */
-//                    ListAdapter adapter = new SimpleAdapter(
-//                            MainActivity.this,
-//                            rssFeedList, R.layout.site_list_row,
-//                            new String[] { TAG_ID, TAG_TITLE, TAG_LINK },
-//                            new int[] { R.id.sqlite_id, R.id.title});
-//                    // updating listview
-//                    lv.setAdapter(adapter);
-//                    registerForContextMenu(lv);
-
-
+                    adapter.notifyDataSetChanged();
                 }
             });
             return null;
@@ -275,6 +208,11 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String args) {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
+            viewPager.setAdapter(adapter);
+
+            // Give the TabLayout the ViewPager
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            tabLayout.setupWithViewPager(viewPager);
         }
 
     }
