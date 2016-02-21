@@ -4,9 +4,13 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -35,10 +39,14 @@ public class MainActivity extends AppCompatActivity {
     private CustomPagerAdapter adapter;
     private ViewPager viewPager;
 
+    boolean mIsLargeLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
 
         initToolbar();
         initViewPagerAndTabs();
@@ -54,11 +62,29 @@ public class MainActivity extends AppCompatActivity {
          * */
         new loadStoreSites().execute();
 
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-//        AdView mAdView = (AdView) findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        mAdView.loadAd(adRequest);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_about) {
+            showDialog();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void initToolbar() {
@@ -74,6 +100,20 @@ public class MainActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
 
 
+    }
+
+    public void showDialog() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        AboutFragment newFragment = new AboutFragment();
+
+        // The device is smaller, so show the fragment fullscreen
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        // For a little polish, specify a transition animation
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        // To make it fullscreen, use the 'content' root view as the container
+        // for the fragment, which is always the root view for the activity
+        transaction.add(android.R.id.content, newFragment)
+                .addToBackStack(null).commit();
     }
 
     /**

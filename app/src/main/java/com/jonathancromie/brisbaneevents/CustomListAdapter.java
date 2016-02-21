@@ -1,10 +1,13 @@
 package com.jonathancromie.brisbaneevents;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +30,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
         TextView textAddress;
         TextView textDate;
         TextView textBooking;
+        Button explore;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -36,6 +40,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
             textAddress = (TextView) itemView.findViewById(R.id.address);
             textDate = (TextView) itemView.findViewById(R.id.date);
             textBooking = (TextView) itemView.findViewById(R.id.booking);
+            explore = (Button) itemView.findViewById(R.id.explore);
         }
     }
 
@@ -54,7 +59,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
     }
 
     @Override
-    public void onBindViewHolder(DataObjectHolder holder, int position) {
+    public void onBindViewHolder(final DataObjectHolder holder, int position) {
         Context context = holder.imageView.getContext();
 
         Picasso.with(context).load(mDataset.get(position).getImage()).resize(75, 75).placeholder(R.drawable.ic_photo_camera_black_24dp).error(R.drawable.ic_photo_camera_black_24dp).into(holder.imageView);
@@ -63,6 +68,17 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
         holder.textAddress.setText(mDataset.get(position).getAddress());
         holder.textDate.setText(mDataset.get(position).getDate());
         holder.textBooking.setText(mDataset.get(position).getBooking());
+        holder.explore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = holder.textLink.getText().toString();
+                Intent in = new Intent(Intent.ACTION_VIEW);
+                in.setData(Uri.parse(url));
+                v.getContext().startActivity(in);
+//                explore(v);
+
+            }
+        });
     }
 
     public void addItem(RSSItem dataObj, int index) {
