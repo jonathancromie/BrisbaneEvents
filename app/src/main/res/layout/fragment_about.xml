@@ -11,6 +11,8 @@
         android:text="@string/about"
         android:layout_margin="8dp"
         android:textAlignment="center"
-        android:textIsSelectable="false" />
+        android:textIsSelectable="false"
+        android:id="@+id/about"
+        android:textSize="14sp" />
 
 </FrameLayout>

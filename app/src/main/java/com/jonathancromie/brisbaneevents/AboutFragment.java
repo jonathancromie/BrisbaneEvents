@@ -1,14 +1,23 @@
 package com.jonathancromie.brisbaneevents;
 
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GestureDetectorCompat;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
 
 import com.jonathancromie.brisbaneevents.R;
 
@@ -17,27 +26,65 @@ import com.jonathancromie.brisbaneevents.R;
  */
 public class AboutFragment extends DialogFragment {
 
-
-    /** The system calls this to get the DialogFragment's layout, regardless
-     of whether it's being displayed as a dialog or an embedded fragment. */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout to use as dialog or embedded fragment
-        return inflater.inflate(R.layout.fragment_about, container, false);
-
-    }
+    private TextView about;
+    private int taps = 0;
+    private float size = 14;
 
     /** The system calls this only when creating the layout in a dialog. */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // The only reason you might override this method when using onCreateView() is
-        // to modify any dialog characteristics. For example, the dialog includes a
-        // title by default, but your custom layout might not need it. So here you can
-        // remove the dialog title, but you must call the superclass to get the Dialog.
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        return dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setTitle("About")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        View view = inflater.inflate(R.layout.fragment_about, null, false);
+
+        about = (TextView) view.findViewById(R.id.about);
+
+        final GestureDetector gesture = new GestureDetector(getActivity(),
+                new GestureDetector.SimpleOnGestureListener() {
+
+                    @Override
+                    public boolean onDown(MotionEvent e) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onSingleTapUp(MotionEvent event) {
+                        about.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
+                        size += 1;
+                        taps += 1;
+
+                        if (taps == 5) {
+                            Intent i = new Intent(getActivity(), GameActivity.class);
+                            startActivity(i);
+                        }
+
+
+                        return true;
+                    }
+
+
+                });
+
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gesture.onTouchEvent(event);
+            }
+        });
+
+        builder.setView(view);
+        return builder.create();
     }
+
+
 
 }

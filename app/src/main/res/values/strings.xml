@@ -11,9 +11,10 @@
     <!-- REAL ID -->
     <!--<string name="banner_ad_unit_id">ca-app-pub-5482522486671782/9207865759</string>-->
     <string name="about">
-        Data supplied by Brisbane City Council at data.brisbane.qld.gov.au.\n
-        Icon made by Scott de Jonge from www.flaticon.com
+        Data supplied by Brisbane City Council at data.brisbane.qld.gov.au. \n
+        Icon made by Scott de Jonge from www.flaticon.com \n
         © Jonathan Cromie. All rights reserved.
 
     </string>
+    <string name="title_activity_game">GameActivity</string>
 </resources>
