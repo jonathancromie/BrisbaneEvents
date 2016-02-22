@@ -24,8 +24,35 @@
         </activity>
         <activity
             android:name=".GameActivity"
-            android:label="@string/title_activity_game"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_activity_game">
+        </activity>
+
+        <activity
+            android:name=".BackgroundActivity"
+            android:label="@string/title_activity_background"
+            android:launchMode="singleTop" >
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:launchMode="singleTop" >
+        </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about"
+            android:launchMode="singleTop" >
+        </activity>
+        <activity
+            android:name=".HighScoresActivity"
+            android:label="@string/title_activity_high_scores"
+            android:launchMode="singleTop" >
+        </activity>
+        <activity
+            android:name=".StartActivity"
+            android:label="@string/title_activity_start"
+            android:launchMode="singleTop" >
+
+        </activity>
     </application>
 
 </manifest>

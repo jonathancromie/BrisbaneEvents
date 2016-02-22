@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jonathancromie.brisbaneevents.SettingsActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Player Name:"
+        android:id="@+id/textView4"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryText"
+        android:linksClickable="true"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignStart="@+id/name_input"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/name_input"
+        android:hint="@string/enter_name"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryText"
+        android:textColorHint="@color/colorSecondaryText"
+        android:layout_gravity="center"
+        android:layout_marginRight="16dp"
+        android:lines="1"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:inputType="textCapWords"
+        android:layout_marginBottom="8dp" />
+
+</RelativeLayout>

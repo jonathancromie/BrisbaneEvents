@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Website s = siteList.get(i);
 
-                        // creating new HashMap
+//                        // creating new HashMap
                         HashMap<String, String> map = new HashMap<String, String>();
 
                         // adding each child node to HashMap key => value

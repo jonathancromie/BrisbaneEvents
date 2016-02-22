@@ -63,7 +63,7 @@ public class AboutFragment extends DialogFragment {
                         taps += 1;
 
                         if (taps == 5) {
-                            Intent i = new Intent(getActivity(), GameActivity.class);
+                            Intent i = new Intent(getActivity(), StartActivity.class);
                             startActivity(i);
                         }
 

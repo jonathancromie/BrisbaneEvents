@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <item android:id="@+id/action_background" android:title="@string/action_background"
+        android:orderInCategory="1" app:showAsAction="never" />
+    <item android:id="@+id/action_high_scores" android:title="@string/action_high_scores"
+        android:orderInCategory="3" app:showAsAction="never" />
+    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:orderInCategory="4" app:showAsAction="never" />
+    <item android:id="@+id/action_about" android:title="@string/action_about"
+        android:orderInCategory="6" app:showAsAction="never" />
+    <item android:id="@+id/action_exit" android:title="@string/action_exit"
+        android:orderInCategory="7" app:showAsAction="never" />
+</menu>
