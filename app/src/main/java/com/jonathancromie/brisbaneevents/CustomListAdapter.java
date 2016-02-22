@@ -75,7 +75,6 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
                 Intent in = new Intent(Intent.ACTION_VIEW);
                 in.setData(Uri.parse(url));
                 v.getContext().startActivity(in);
-//                explore(v);
 
             }
         });

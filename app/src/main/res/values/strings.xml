@@ -3,12 +3,9 @@
     <string name="action_about">About</string>
     <string name="title_activity_list_rss_items">ListRSSItemsActivity</string>
     <string name="event_image">Event image</string>
-    <!-- TEST ID -->
+    <!-- TEST -->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <!-- REAL ID -->
+    <!-- REAL -->
     <!--<string name="banner_ad_unit_id">ca-app-pub-5482522486671782/9207865759</string>-->
     <string name="about">
         Data supplied by Brisbane City Council at data.brisbane.qld.gov.au. \n
@@ -36,4 +33,5 @@
         © Jonathan Cromie 2015. All rights reserved.\n
         Please send all enquiries to joncromie@gmail.com
     </string>
+    <string name="title_activity_explore">ExploreActivity</string>
 </resources>

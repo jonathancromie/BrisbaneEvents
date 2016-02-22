@@ -14,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,8 +38,8 @@ public class GameActivity extends ActionBarActivity {
     Random random;
     CountDownTimer timer;
 
-    int click = 0;
-    int score = 0;
+    private int click = 0;
+    private int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +48,11 @@ public class GameActivity extends ActionBarActivity {
 
         dbHandler = new MyDBHandler(this, null, null, 1);
 
-        TextView time_text = (TextView) findViewById(R.id.time_text);
+        time_text = (TextView) findViewById(R.id.time_text);
         time_text.setText("30");
+
+        score_text = (TextView) findViewById(R.id.score_text);
+        score_text.setText("0");
 
         main_layout = (ViewGroup) findViewById(R.id.main_layout);
 
@@ -67,6 +71,12 @@ public class GameActivity extends ActionBarActivity {
 
         moving_button = (ImageButton) findViewById(R.id.moving_button);
 
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(150, 150);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        params.addRule(RelativeLayout.CENTER_VERTICAL);
+        moving_button.setLayoutParams(params);
+        moving_button.setScaleType(ImageButton.ScaleType.CENTER_CROP);
+
         if (getIntent().getByteArrayExtra("userIcon") != null) {
             byte[] b = getIntent().getExtras().getByteArray("userIcon");
             Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
@@ -75,17 +85,10 @@ public class GameActivity extends ActionBarActivity {
         }
 
         else {
-            moving_button.setBackgroundResource(getIntent().getIntExtra("iconImageId", R.drawable.android_icon));
+            moving_button.setBackgroundResource(getIntent().getIntExtra("iconImageId", R.drawable.ic_android_white_24dp));
         }
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(150, 150);
-        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        params.addRule(RelativeLayout.CENTER_VERTICAL);
-        moving_button.setLayoutParams(params);
-        moving_button.setScaleType(ImageButton.ScaleType.CENTER_CROP);
-
         moveButton();
-        TextView score_text = (TextView) findViewById(R.id.score_text);
         score_text.setText("" + score);
 
     }
@@ -112,7 +115,7 @@ public class GameActivity extends ActionBarActivity {
     }
 
     public void keepScore() {
-        score_text = (TextView) findViewById(R.id.score_text);
+
 
         if (moving_button.isInTouchMode()) {
             score += 1;
@@ -133,6 +136,7 @@ public class GameActivity extends ActionBarActivity {
             public void onFinish() {
                 time_text.setText("0");
                 saveScore();
+                restart();
 //                openActivity(HighScoresActivity.class);
             }
         }.start();
@@ -150,6 +154,34 @@ public class GameActivity extends ActionBarActivity {
         Scores scores = new Scores(name, score);
 
         dbHandler.addScore(scores);
+    }
+
+    public void restart() {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
+        alertDialog.setTitle("Score");
+        alertDialog.setMessage("You scored " + score + " points!\nWould you like to play again?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setup();
+            }
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                openActivity(MainActivity.class);
+            }
+        });
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
+    public void setup() {
+        click = 0;
+        score = 0;
+        time_text.setText("30");
+        score_text.setText("0");
     }
 
     public void reallyExit() {

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jonathancromie.brisbaneevents">
+    package="com.jonathancromie.brisbaneevents"
+    android:versionCode="0"
+    android:versionName="0.1">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -24,35 +26,33 @@
         </activity>
         <activity
             android:name=".GameActivity"
-            android:label="@string/title_activity_game">
-        </activity>
-
+            android:label="@string/title_activity_game"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".BackgroundActivity"
             android:label="@string/title_activity_background"
-            android:launchMode="singleTop" >
-        </activity>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:launchMode="singleTop" >
-        </activity>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".AboutActivity"
             android:label="@string/title_activity_about"
-            android:launchMode="singleTop" >
-        </activity>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".HighScoresActivity"
             android:label="@string/title_activity_high_scores"
-            android:launchMode="singleTop" >
-        </activity>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".StartActivity"
             android:label="@string/title_activity_start"
-            android:launchMode="singleTop" >
-
-        </activity>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

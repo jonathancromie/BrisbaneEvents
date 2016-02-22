@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GestureDetectorCompat;
@@ -15,9 +16,11 @@ import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jonathancromie.brisbaneevents.R;
 
@@ -27,7 +30,6 @@ import com.jonathancromie.brisbaneevents.R;
 public class AboutFragment extends DialogFragment {
 
     private TextView about;
-    private int taps = 0;
     private float size = 14;
 
     /** The system calls this only when creating the layout in a dialog. */
@@ -48,38 +50,86 @@ public class AboutFragment extends DialogFragment {
 
         about = (TextView) view.findViewById(R.id.about);
 
-        final GestureDetector gesture = new GestureDetector(getActivity(),
-                new GestureDetector.SimpleOnGestureListener() {
+        view.setOnTouchListener(new View.OnTouchListener() {
+            Handler handler = new Handler();
 
-                    @Override
-                    public boolean onDown(MotionEvent e) {
-                        return true;
-                    }
+            int numberOfTaps = 0;
+            long lastTapTimeMs = 0;
+            long touchDownMs = 0;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        touchDownMs = System.currentTimeMillis();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        handler.removeCallbacksAndMessages(null);
 
-                    @Override
-                    public boolean onSingleTapUp(MotionEvent event) {
-                        about.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
-                        size += 1;
-                        taps += 1;
+                        if ((System.currentTimeMillis() - touchDownMs) > ViewConfiguration.getTapTimeout()) {
+                            //it was not a tap
 
-                        if (taps == 5) {
+                            numberOfTaps = 0;
+                            lastTapTimeMs = 0;
+                            break;
+                        }
+
+                        if (numberOfTaps > 0
+                                && (System.currentTimeMillis() - lastTapTimeMs) < ViewConfiguration.getDoubleTapTimeout()) {
+                            numberOfTaps += 1;
+                        } else {
+                            numberOfTaps = 1;
+                        }
+
+                        lastTapTimeMs = System.currentTimeMillis();
+
+                        if (numberOfTaps == 3) {
                             Intent i = new Intent(getActivity(), StartActivity.class);
                             startActivity(i);
                         }
 
+                }
 
-                        return true;
-                    }
-
-
-                });
-
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return gesture.onTouchEvent(event);
+                return true;
             }
+
+
+
+
+
         });
+
+//        final GestureDetector gesture = new GestureDetector(getActivity(),
+//                new GestureDetector.SimpleOnGestureListener() {
+//
+//                    @Override
+//                    public boolean onDown(MotionEvent e) {
+//                        return true;
+//                    }
+//
+//                    @Override
+//                    public boolean onSingleTapUp(MotionEvent event) {
+//                        about.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
+//                        size += 1;
+//                        taps += 1;
+//
+//                        if (taps == 5) {
+//                            Intent i = new Intent(getActivity(), StartActivity.class);
+//                            startActivity(i);
+//                        }
+//
+//
+//                        return true;
+//                    }
+//
+//
+//                });
+//
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return gesture.onTouchEvent(event);
+//            }
+//        });
 
         builder.setView(view);
         return builder.create();

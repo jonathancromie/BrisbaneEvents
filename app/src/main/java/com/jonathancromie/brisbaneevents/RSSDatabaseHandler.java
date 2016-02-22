@@ -84,7 +84,7 @@ public class RSSDatabaseHandler extends SQLiteOpenHelper {
         List<Website> siteList = new ArrayList<Website>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_RSS
-                + " ORDER BY id DESC";
+                + " ORDER BY title ASC";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

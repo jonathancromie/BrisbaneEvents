@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 //import com.jonathancromie.game.R;
 
@@ -27,6 +28,8 @@ public class StartActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        Toast.makeText(this, "How'd you get in here? :/", Toast.LENGTH_SHORT).show();
 
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -94,7 +97,7 @@ public class StartActivity extends ActionBarActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+                        openActivity(MainActivity.class);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
