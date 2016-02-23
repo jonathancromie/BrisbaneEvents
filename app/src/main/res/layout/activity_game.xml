@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Time:"
-        android:id="@+id/textView2"
+        android:id="@+id/date"
         android:textColor="@color/colorText"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Score:"
-        android:id="@+id/textView3"
+        android:id="@+id/address"
         android:textColor="@color/colorText"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/score_text"
@@ -55,8 +55,8 @@
         android:id="@+id/time_text"
         android:textColor="@color/colorText"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2"
+        android:layout_toRightOf="@+id/date"
+        android:layout_toEndOf="@+id/date"
         android:layout_marginTop="8dp" />
 
     <TextView

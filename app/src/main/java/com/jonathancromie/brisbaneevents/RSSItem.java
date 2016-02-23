@@ -13,6 +13,10 @@ public class RSSItem {
     String _booking;
     String _guid;
     String _image;
+    String _cost;
+    String _meeting_point;
+    String _requirements;
+    String _description;
 
     // constructor
     public RSSItem(){
@@ -20,7 +24,8 @@ public class RSSItem {
     }
 
     // constructor with parameters
-    public RSSItem(String title, String link, String address, String date, String booking, String guid, String image){
+    public RSSItem(String title, String link, String address, String date, String booking, String guid,
+                   String image, String cost, String meeting_point, String requirements, String description) {
         this._title = title;
         this._link = link;
         this._address = address;
@@ -28,6 +33,10 @@ public class RSSItem {
         this._booking = booking;
         this._guid = guid;
         this._image = image;
+        this._cost = cost;
+        this._meeting_point = meeting_point;
+        this._requirements = requirements;
+        this._description = description;
     }
 
     /**
@@ -61,6 +70,22 @@ public class RSSItem {
         this._image = image;
     }
 
+    public void setCost(String _cost) {
+        this._cost = _cost;
+    }
+
+    public void setMeetingPoint(String _meeting_point) {
+        this._meeting_point = _meeting_point;
+    }
+
+    public void setRequirements(String _requirements) {
+        this._requirements = _requirements;
+    }
+
+    public void setDescription(String _description) {
+        this._description = _description;
+    }
+
     /**
      * All GET methods
      * */
@@ -90,5 +115,21 @@ public class RSSItem {
 
     public String getImage(){
         return this._image;
+    }
+
+    public String getCost() {
+        return _cost;
+    }
+
+    public String getMeetingPoint() {
+        return _meeting_point;
+    }
+
+    public String getRequirements() {
+        return _requirements;
+    }
+
+    public String getDescription() {
+        return _description;
     }
 }

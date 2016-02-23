@@ -45,30 +45,20 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp" />
 
-            <!-- published date -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/address"
-                android:layout_toRightOf="@+id/imageView"
-                android:layout_below="@+id/title"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp" />
-
-            <!-- article description -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/date"
                 android:layout_toRightOf="@+id/imageView"
-                android:layout_below="@+id/address"
+                android:layout_below="@+id/title"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp" />
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/booking"
+                android:id="@+id/address"
                 android:layout_toRightOf="@+id/imageView"
                 android:layout_below="@+id/date"
                 android:layout_marginTop="8dp"
@@ -79,12 +69,13 @@
                 android:layout_height="wrap_content"
                 android:text="Explore"
                 android:id="@+id/explore"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/booking"
                 android:textColor="@color/colorAccent"
                 android:background="@android:color/transparent"
-                android:layout_margin="8dp" />
+                android:layout_below="@+id/address"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp" />
 
         </RelativeLayout>
 
