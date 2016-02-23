@@ -85,6 +85,8 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
                 String meeting_point = mDataset.get(position).getMeetingPoint();
                 String requirements = mDataset.get(position).getRequirements();
                 String description = mDataset.get(position).getDescription();
+                String time_start = mDataset.get(position).getTimeStart();
+                String time_end = mDataset.get(position).getTimeEnd();
 
                 Intent in = new Intent(v.getContext(), ExploreActivity.class);
                 in.putExtra("link", link);
@@ -97,6 +99,8 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
                 in.putExtra("meeting_point", meeting_point);
                 in.putExtra("requirements", requirements);
                 in.putExtra("description", description);
+                in.putExtra("time_start", time_start);
+                in.putExtra("time_end", time_end);
 
                 v.getContext().startActivity(in);
 

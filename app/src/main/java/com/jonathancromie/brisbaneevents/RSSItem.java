@@ -17,6 +17,8 @@ public class RSSItem {
     String _meeting_point;
     String _requirements;
     String _description;
+    String _time_start;
+    String _time_end;
 
     // constructor
     public RSSItem(){
@@ -24,8 +26,10 @@ public class RSSItem {
     }
 
     // constructor with parameters
-    public RSSItem(String title, String link, String address, String date, String booking, String guid,
-                   String image, String cost, String meeting_point, String requirements, String description) {
+    public RSSItem(String title, String link, String address, String date,
+                   String booking, String guid, String image, String cost,
+                   String meeting_point, String requirements, String description,
+                   String time_start, String time_end) {
         this._title = title;
         this._link = link;
         this._address = address;
@@ -37,6 +41,8 @@ public class RSSItem {
         this._meeting_point = meeting_point;
         this._requirements = requirements;
         this._description = description;
+        this._time_start = time_start;
+        this._time_end = time_end;
     }
 
     /**
@@ -86,6 +92,14 @@ public class RSSItem {
         this._description = _description;
     }
 
+    public void setTimeStart(String _time_start) {
+        this._time_start = _time_start;
+    }
+
+    public void setTimeEnd(String _time_end) {
+        this._time_end = _time_end;
+    }
+
     /**
      * All GET methods
      * */
@@ -131,5 +145,13 @@ public class RSSItem {
 
     public String getDescription() {
         return _description;
+    }
+
+    public String getTimeStart() {
+        return _time_start;
+    }
+
+    public String getTimeEnd() {
+        return _time_end;
     }
 }

@@ -43,6 +43,8 @@ public class RSSParser {
     private static String TAG_CUSTOM_FIELD = "customfield";
     private static String TAG_DATE_TIME = "formatteddatetime";
     private static String TAG_DESCRIPTION = "description";
+    private static String TAG_LOCAL_START = "localstart";
+    private static String TAG_LOCAL_END = "localend";
     private static String TAG_ADDRESS = "Venue address";
     private static String TAG_BOOKING = "Bookings";
     private static String TAG_IMAGE = "Event image";
@@ -135,9 +137,12 @@ public class RSSParser {
                     Element e1 = (Element) items.item(i);
 
                     NodeList customFields = e1.getElementsByTagNameNS(TAG_TRUMBA_NAMESPACE, TAG_CUSTOM_FIELD);
-                    NodeList datetime = e1.getElementsByTagNameNS(TAG_TRUMBA_NAMESPACE, TAG_DATE_TIME);
+                    NodeList dateTime = e1.getElementsByTagNameNS(TAG_TRUMBA_NAMESPACE, TAG_DATE_TIME);
+                    NodeList localStart = e1.getElementsByTagNameNS(TAG_TRUMBA_NAMESPACE, TAG_LOCAL_START);
+                    NodeList localEnd = e1.getElementsByTagNameNS(TAG_TRUMBA_NAMESPACE, TAG_LOCAL_END);
 
                     NodeList xCalDescription = e1.getElementsByTagNameNS(TAG_XCAL_NAMESPACE, TAG_DESCRIPTION);
+
 
                     String title = this.getValue(e1, TAG_TITLE);
                     String link = this.getValue(e1, TAG_LINK);
@@ -148,8 +153,10 @@ public class RSSParser {
                     String image = "";
                     String meeting_point = "";
                     String requirements = "";
-                    String date = datetime.item(0).getChildNodes().item(0).getNodeValue();
+                    String date = dateTime.item(0).getChildNodes().item(0).getNodeValue();
                     String description = xCalDescription.item(0).getChildNodes().item(0).getNodeValue();
+                    String time_start = localStart.item(0).getChildNodes().item(0).getNodeValue();
+                    String time_end = localEnd.item(0).getChildNodes().item(0).getNodeValue();
 
                     for (int j = 0; j < customFields.getLength(); j++) {
                         Element e2 = (Element) customFields.item(j);
@@ -179,7 +186,8 @@ public class RSSParser {
 
                     }
 
-                    RSSItem rssItem = new RSSItem(title, link, address, date, booking, guid, image, cost, meeting_point, requirements, description);
+                    RSSItem rssItem = new RSSItem(title, link, address, date, booking, guid, image,
+                            cost, meeting_point, requirements, description, time_start, time_end);
 
                     // adding item to list
                     itemsList.add(rssItem);
