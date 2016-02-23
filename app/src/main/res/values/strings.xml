@@ -4,9 +4,9 @@
     <string name="title_activity_list_rss_items">ListRSSItemsActivity</string>
     <string name="event_image">Event image</string>
     <!-- TEST -->
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
     <!-- REAL -->
-    <!--<string name="banner_ad_unit_id">ca-app-pub-5482522486671782/9207865759</string>-->
+    <string name="banner_ad_unit_id">ca-app-pub-5482522486671782/9207865759</string>
     <string name="about">
         Data supplied by Brisbane City Council at data.brisbane.qld.gov.au. \n
         Icon made by Scott de Jonge from www.flaticon.com\n

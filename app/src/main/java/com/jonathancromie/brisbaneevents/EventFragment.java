@@ -36,6 +36,8 @@ public class EventFragment extends Fragment {
     List<RSSItem> rssItems = new ArrayList<RSSItem>();
 
     private RecyclerView mRecyclerView;
+    private CustomListAdapter adapter;
+    private LinearLayoutManager layoutManager;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -58,9 +60,12 @@ public class EventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        adapter = new CustomListAdapter(getDataSet());
+
+
+//        mRecyclerView.setAdapter(adapter);
 
         // Getting Single website from SQLite
         RSSDatabaseHandler rssDB = new RSSDatabaseHandler(getContext());
@@ -139,7 +144,11 @@ public class EventFragment extends Fragment {
         protected void onPostExecute(String args) {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
-            mRecyclerView.setAdapter(new CustomListAdapter(getDataSet()));
+            adapter = new CustomListAdapter(getDataSet());
+            layoutManager = new LinearLayoutManager(getContext());
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setAdapter(adapter);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.jonathancromie.brisbaneevents;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -33,6 +34,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
         TextView textAddress;
         TextView textDate;
         Button explore;
+        Button share;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -42,6 +44,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
             textDate = (TextView) itemView.findViewById(R.id.date);
             textAddress = (TextView) itemView.findViewById(R.id.address);
             explore = (Button) itemView.findViewById(R.id.explore);
+            share = (Button) itemView.findViewById(R.id.share);
         }
     }
 
@@ -97,6 +100,35 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
 
                 v.getContext().startActivity(in);
 
+            }
+        });
+
+        holder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String link = mDataset.get(position).getLink();
+                String title = mDataset.get(position).getTitle();
+                String address = mDataset.get(position).getAddress();
+                String date = mDataset.get(position).getDate();
+                String booking = mDataset.get(position).getBooking();
+                String image = mDataset.get(position).getImage();
+                String cost = mDataset.get(position).getCost();
+                String meeting_point = mDataset.get(position).getMeetingPoint();
+                String requirements = mDataset.get(position).getRequirements();
+                String description = mDataset.get(position).getDescription();
+
+                Intent in = new Intent();
+                in.setAction(Intent.ACTION_SEND);
+                in.putExtra(Intent.EXTRA_TEXT, title + "\n\n" +
+                                    description + "\n" +
+                                    date + "\n" +
+                                    address + "\n" +
+                                    cost + "\n" +
+                                    "Meeting point: " + meeting_point + "\n" +
+                                    "Requirements: " + requirements + "\n" +
+                                    "Booking: " + booking);
+                in.setType("text/plain");
+                v.getContext().startActivity(in);
             }
         });
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jonathancromie.brisbaneevents"
-    android:versionCode="0"
-    android:versionName="0.1">
+    android:versionCode="2"
+    android:versionName="0.2">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -24,6 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ExploreActivity"
+            android:label="@string/title_activity_explore"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".GameActivity"
             android:label="@string/title_activity_game"
@@ -53,10 +58,6 @@
             android:label="@string/title_activity_start"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ExploreActivity"
-            android:label="@string/title_activity_explore"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         initViewPagerAndTabs();
 
-//        AdView mAdView = (AdView) findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        mAdView.loadAd(adRequest);
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
 
         /**
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         adapter = new CustomPagerAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.viewPager);
+//        viewPager.setOffscreenPageLimit(16);
 
 
     }
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPreExecute();
             pDialog = new ProgressDialog(
                     MainActivity.this);
-            pDialog.setMessage("Loading events ...");
+            pDialog.setMessage("Loading sites ...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
