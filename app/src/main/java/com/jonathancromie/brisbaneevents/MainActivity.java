@@ -170,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_about:
                 showDialog();
                 return true;
+            case R.id.action_exit:
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }

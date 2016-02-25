@@ -142,6 +142,10 @@ public class GameActivity extends ActionBarActivity {
         }.start();
     }
 
+    public void stopTimer() {
+        timer.cancel();
+    }
+
     public void saveScore() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String name = prefs.getString("player_name", null).toString();
@@ -191,7 +195,9 @@ public class GameActivity extends ActionBarActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        stopTimer();
                         openActivity(MainActivity.class);
+                        finish();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

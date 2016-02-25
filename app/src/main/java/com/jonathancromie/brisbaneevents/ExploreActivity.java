@@ -6,9 +6,12 @@ import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -119,10 +122,61 @@ public class ExploreActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_explore, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action buttons
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.action_about:
+                showDialog();
+                return true;
+            case R.id.action_share:
+                share();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    public void share() {
+        Intent in = new Intent();
+        in.setAction(Intent.ACTION_SEND);
+        in.putExtra(Intent.EXTRA_TEXT, title + "\n\n" +
+                description + "\n" +
+                date + "\n" +
+                address + "\n" +
+                cost + "\n" +
+                "Meeting point: " + meeting_point + "\n" +
+                "Requirements: " + requirements + "\n" +
+                "Booking: " + booking);
+        in.setType("text/plain");
+        startActivity(in);
+        finish();
+    }
+
+    public void showDialog() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        AboutFragment newFragment = new AboutFragment();
+
+        // The device is smaller, so show the fragment fullscreen
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        // For a little polish, specify a transition animation
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        // To make it fullscreen, use the 'content' root view as the container
+        // for the fragment, which is always the root view for the activity
+//        transaction..replace(android.R.id.content, newFragment)
+//                .addToBackStack(null).commit();
+        transaction.add(newFragment, "dialog").commit();
     }
 }
