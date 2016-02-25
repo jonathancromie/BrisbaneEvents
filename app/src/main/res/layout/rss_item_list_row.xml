@@ -6,18 +6,16 @@
 
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:id="@+id/imageView"
-        android:src="@mipmap/ic_launcher"
-        android:minHeight="75dp"
-        android:minWidth="75dp"
+        android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
-        android:layout_marginLeft="8dp" />
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/event_image" />
 
     <TextView
         android:layout_width="wrap_content"
