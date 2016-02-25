@@ -10,6 +10,7 @@
     <string name="about">
         Data supplied by Brisbane City Council at data.brisbane.qld.gov.au. \n
         Icon made by Scott de Jonge from www.flaticon.com\n
+        Icons supplied by Google and Freepik from www.flaticon.com\n
         © Jonathan Cromie 2016. All rights reserved.\n
         Please send all enquiries to joncromie@gmail.com
 
@@ -34,4 +35,6 @@
         Please send all enquiries to joncromie@gmail.com
     </string>
     <string name="title_activity_explore">ExploreActivity</string>
+    <string name="openDrawer">open</string>
+    <string name="closeDrawer">close</string>
 </resources>

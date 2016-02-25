@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="titles">
+        <item>Active Parks</item>
+        <item>Arts, Crafts and Culture</item>
+        <item>Brisbane Botanic Gardens</item>
+        <item>Brisbane City Council</item>
+        <item>Brisbane Markets</item>
+        <item>Brisbane Parks</item>
+        <item>Brisbane Powerhouse</item>
+        <item>Business</item>
+        <item>Chill Out</item>
+        <item>City Hall</item>
+        <item>Classes and Workshops</item>
+        <item>Family</item>
+        <item>Festivals</item>
+        <item>Fitness and Strength</item>
+        <item>Gold N\' Kids</item>
+        <item>Gold Program</item>
+        <item>Green</item>
+        <item>Infants and Toddlers</item>
+        <item>Kids Aged 6 to 12</item>
+        <item>King George Square</item>
+        <item>Live Program</item>
+        <item>Library</item>
+        <item>Movies</item>
+        <item>Museum of Brisbane</item>
+        <item>Music and Concert</item>
+        <item>Riverstage</item>
+        <item>Sir Thomas Brisbane Planetarium</item>
+        <item>Southbank Parklands</item>
+        <item>Teen</item>
+        <item>Visible Ink</item>
+    </string-array>
+
+    <string-array name="icons">
+        <item>@drawable/ic_tree_silhouette</item>
+        <item>@drawable/ic_painter_palette</item>
+        <item>@drawable/ic_nature_people_white_24dp</item>
+        <item>@drawable/ic_location_city_white_24dp</item>
+        <item>@drawable/ic_shopping_cart_white_24dp</item>
+        <item>@drawable/ic_nature_white_24dp</item>
+        <item>@drawable/ic_factory</item>
+        <item>@drawable/ic_business_white_24dp</item>
+        <item>@drawable/ic_massage_spa_body_treatment</item>
+        <item>@drawable/ic_moot_hall</item>
+        <item>@drawable/ic_class_white_24dp</item>
+        <item>@drawable/ic_family_silhouette</item>
+        <item>@drawable/ic_floating_balloons</item>
+        <item>@drawable/ic_fitness_center_white_24dp</item>
+        <item>@drawable/ic_grandmother_and_grandson</item>
+        <item>@drawable/ic_old_man_from_frontal_view_with_a_cane</item>
+        <item>@drawable/ic_triangular_arrows_sign_for_recycle</item>
+        <item>@drawable/ic_child_friendly_white_24dp</item>
+        <item>@drawable/ic_extension_white_24dp</item>
+        <item>@drawable/ic_premium_services</item>
+        <item>@drawable/ic_guitar_black_shape</item>
+        <item>@drawable/ic_local_library_white_24dp</item>
+        <item>@drawable/ic_local_movies_white_24dp</item>
+        <item>@drawable/ic_account_balance_white_24dp</item>
+        <item>@drawable/ic_music_note_white_24dp</item>
+        <item>@drawable/ic_vincent_thomas_bridge</item>
+        <item>@drawable/ic_telescope</item>
+        <item>@drawable/ic_ferris_wheel</item>
+        <item>@drawable/ic_face_white_24dp</item>
+        <item>@drawable/ic_home_page</item>
+    </string-array>
+</resources>

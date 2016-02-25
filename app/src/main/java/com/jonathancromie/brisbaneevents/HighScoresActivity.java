@@ -51,7 +51,7 @@ public class HighScoresActivity extends ActionBarActivity {
         recyclerView.setAdapter(adapter);
 
 
-//        adapter = new CustomAdapter(this, R.layout.list_score, scores);
+//        adapter = new CustomDrawerAdapter(this, R.layout.list_score, scores);
 //        ListView android_list = (ListView) findViewById(R.id.list_view);
 //        android_list.setAdapter(adapter);
 
@@ -91,7 +91,7 @@ public class HighScoresActivity extends ActionBarActivity {
             RecyclerView.Adapter adapter = new HighScoresAdapter(HighScoresActivity.this, scores);
             recyclerView.setAdapter(adapter);
 
-//            adapter = new CustomAdapter(HighScoresActivity.this, R.layout.list_score, scores);
+//            adapter = new CustomDrawerAdapter(HighScoresActivity.this, R.layout.list_score, scores);
 //            ListView android_list = (ListView) findViewById(R.id.list_view);
 //
 //            android_list.setAdapter(adapter);
