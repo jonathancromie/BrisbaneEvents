@@ -1,9 +1,11 @@
 package com.jonathancromie.brisbaneevents;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -20,7 +22,7 @@ import android.widget.Toast;
 /**
  * Created by Jonathan on 21-Feb-16.
  */
-public class CustomDrawerAdapter extends RecyclerView.Adapter<CustomDrawerAdapter.ViewHolder> {
+public class CustomDrawerAdapter extends RecyclerView.Adapter<CustomDrawerAdapter.ViewHolder> implements View.OnClickListener {
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
@@ -35,6 +37,11 @@ public class CustomDrawerAdapter extends RecyclerView.Adapter<CustomDrawerAdapte
     String email;
 
     public static int selectedItem = 0;
+
+    @Override
+    public void onClick(View v) {
+
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -102,11 +109,19 @@ public class CustomDrawerAdapter extends RecyclerView.Adapter<CustomDrawerAdapte
             holder.textView.setText(titles[position-1]);
             holder.icon.setImageResource(icons.getResourceId(position-1, -1));
 
-            int color = mContext.getResources().getColor(R.color.colorPrimary);
+            int colorPrimary = mContext.getResources().getColor(R.color.colorPrimary);
+            int colorPrimaryText = mContext.getResources().getColor(R.color.colorPrimaryText);
+            int colorSecondaryText = mContext.getResources().getColor(R.color.colorSecondaryText);
 
             if (position == selectedItem) {
-                holder.textView.setTextColor(color);
-                holder.icon.setColorFilter(color);
+                holder.textView.setTextColor(colorPrimary);
+                holder.icon.setColorFilter(colorPrimary);
+            }
+
+            else {
+                holder.textView.setTextColor(colorPrimaryText);
+//                holder.icon.setColorFilter(Color.rgb(127,127,127));
+                holder.icon.setColorFilter(colorSecondaryText);
             }
         }
         else{
@@ -114,6 +129,24 @@ public class CustomDrawerAdapter extends RecyclerView.Adapter<CustomDrawerAdapte
             holder.profile.setImageResource(profile);
             holder.name.setText(name);
             holder.email.setText(email);
+            holder.email.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String[] TO = {"joncromie@gmail.com"};
+                    Intent in = new Intent(Intent.ACTION_SEND);
+                    in.setData(Uri.parse("mailto:"));
+                    in.setType("text/plain");
+                    in.putExtra(Intent.EXTRA_EMAIL, TO);
+                    in.putExtra(Intent.EXTRA_SUBJECT, "Events in Brisbane");
+                    in.putExtra(Intent.EXTRA_TEXT, "Hi Jonathan, ");
+                    try {
+                        v.getContext().startActivity(Intent.createChooser(in, "Send email"));
+                    }
+                    catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(v.getContext(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 

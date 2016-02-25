@@ -42,9 +42,6 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
         public DataObjectHolder(View itemView) {
             super(itemView);
 
-//            itemView.setClickable(true);
-//            itemView.setOnClickListener(this);
-
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             textLink = (TextView) itemView.findViewById(R.id.page_url);
             textTitle = (TextView) itemView.findViewById(R.id.title);
@@ -65,19 +62,6 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
         return dataObjectHolder;
     }
 
-//    String link;
-//    String title;
-//    String address;
-//    String date;
-//    String booking;
-//    String image;
-//    String cost;
-//    String meeting_point;
-//    String requirements;
-//    String description;
-//    String time_start;
-//    String time_end;
-
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
         Context context = holder.imageView.getContext();
@@ -87,19 +71,6 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
         holder.textTitle.setText(mDataset.get(position).getTitle());
         holder.textAddress.setText(mDataset.get(position).getAddress());
         holder.textDate.setText(mDataset.get(position).getDate());
-
-//        link = mDataset.get(position).getLink();
-//        title = mDataset.get(position).getTitle();
-//        address = mDataset.get(position).getAddress();
-//        date = mDataset.get(position).getDate();
-//        booking = mDataset.get(position).getBooking();
-//        image = mDataset.get(position).getImage();
-//        cost = mDataset.get(position).getCost();
-//        meeting_point = mDataset.get(position).getMeetingPoint();
-//        requirements = mDataset.get(position).getRequirements();
-//        description = mDataset.get(position).getDescription();
-//        time_start = mDataset.get(position).getTimeStart();
-//        time_end = mDataset.get(position).getTimeEnd();
     }
 
     public void addItem(RSSItem dataObj, int index) {
