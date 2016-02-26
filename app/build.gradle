@@ -16,8 +16,6 @@ android {
         applicationId "com.jonathancromie.brisbaneevents"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 5
-        versionName "0.4.1"
     }
     buildTypes {
         release {
