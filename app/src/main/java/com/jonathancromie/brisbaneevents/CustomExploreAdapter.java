@@ -49,7 +49,10 @@ public class CustomExploreAdapter extends RecyclerView.Adapter<CustomExploreAdap
                 Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + holder.address.getText().toString());
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
-                v.getContext().startActivity(mapIntent);
+                if (mapIntent.resolveActivity(v.getContext().getPackageManager()) != null) {
+                    v.getContext().startActivity(mapIntent);
+                }
+
             }
         });
     }
