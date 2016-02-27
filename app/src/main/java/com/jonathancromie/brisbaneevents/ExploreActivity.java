@@ -108,7 +108,7 @@ public class ExploreActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        recyclerView.setHasFixedSize(true);
-        adapter = new CustomExploreAdapter(events);
+        adapter = new CustomExploreAdapter(events, this);
         recyclerView.setAdapter(adapter);
 
 

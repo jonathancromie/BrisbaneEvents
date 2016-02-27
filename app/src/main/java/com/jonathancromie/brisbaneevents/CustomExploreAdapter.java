@@ -1,5 +1,6 @@
 package com.jonathancromie.brisbaneevents;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
@@ -21,9 +22,11 @@ import java.util.List;
 public class CustomExploreAdapter extends RecyclerView.Adapter<CustomExploreAdapter.ViewHolder> {
 
     List<Event> events = new ArrayList<Event>();
+    Context mContext;
 
-    public CustomExploreAdapter(List<Event> events) {
+    public CustomExploreAdapter(List<Event> events, Context context) {
         this.events = events;
+        this.mContext = context;
     }
 
     @Override
@@ -43,6 +46,9 @@ public class CustomExploreAdapter extends RecyclerView.Adapter<CustomExploreAdap
         holder.cost.setText(events.get(position).getCost());
         holder.note.setText(events.get(position).getNote());
 
+        int primaryColor = mContext.getResources().getColor(R.color.colorPrimary);
+
+        holder.address.setTextColor(primaryColor);
         holder.address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
