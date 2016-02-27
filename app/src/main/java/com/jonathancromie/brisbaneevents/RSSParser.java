@@ -143,8 +143,15 @@ public class RSSParser {
 
                     NodeList xCalDescription = e1.getElementsByTagNameNS(TAG_XCAL_NAMESPACE, TAG_DESCRIPTION);
 
+                    String query = "youth space";
 
                     String title = this.getValue(e1, TAG_TITLE);
+
+//                    if (title.toLowerCase().contains(query)) {
+//                        System.out.println("yes");
+//                    }
+
+
                     String link = this.getValue(e1, TAG_LINK);
                     String guid = this.getValue(e1, TAG_GUID);
                     String address = "";
@@ -192,6 +199,9 @@ public class RSSParser {
                     // adding item to list
                     itemsList.add(rssItem);
                 }
+
+
+
             }catch(Exception e){
                 // Check log for errors
                 e.printStackTrace();
@@ -329,5 +339,105 @@ public class RSSParser {
     public String getValue(Element item, String str) {
         NodeList n = item.getElementsByTagName(str);
         return this.getElementValue(n.item(0));
+    }
+
+    /**
+     * Getting RSS feed items <item>
+     *
+     * @param - rss link url of the website
+     * @return - List of RSSItem class objects
+     * */
+    public List<RSSItem> getRSSFromQuery(String rss_url, String query){
+        List<RSSItem> itemsList = new ArrayList<RSSItem>();
+        String rss_feed_xml;
+
+        // get RSS XML from rss url
+        rss_feed_xml = this.getXmlFromUrl(rss_url);
+
+        // check if RSS XML fetched or not
+        if(rss_feed_xml != null){
+            // successfully fetched rss xml
+            // parse the xml
+            try{
+                Document doc = this.getDomElement(rss_feed_xml);
+                NodeList nodeList = doc.getElementsByTagName(TAG_CHANNEL);
+                Element e = (Element) nodeList.item(0);
+
+
+                // Getting items array
+                NodeList items = e.getElementsByTagName(TAG_ITEM);
+
+                // looping through each item
+                for(int i = 0; i < items.getLength(); i++){
+                    Element e1 = (Element) items.item(i);
+
+                    NodeList customFields = e1.getElementsByTagNameNS(TAG_TRUMBA_NAMESPACE, TAG_CUSTOM_FIELD);
+                    NodeList dateTime = e1.getElementsByTagNameNS(TAG_TRUMBA_NAMESPACE, TAG_DATE_TIME);
+                    NodeList localStart = e1.getElementsByTagNameNS(TAG_TRUMBA_NAMESPACE, TAG_LOCAL_START);
+                    NodeList localEnd = e1.getElementsByTagNameNS(TAG_TRUMBA_NAMESPACE, TAG_LOCAL_END);
+
+                    NodeList xCalDescription = e1.getElementsByTagNameNS(TAG_XCAL_NAMESPACE, TAG_DESCRIPTION);
+
+                    String title = this.getValue(e1, TAG_TITLE);
+                    String link = this.getValue(e1, TAG_LINK);
+                    String guid = this.getValue(e1, TAG_GUID);
+                    String address = "";
+                    String cost = "";
+                    String booking = "";
+                    String image = "";
+                    String meeting_point = "";
+                    String requirements = "";
+                    String date = dateTime.item(0).getChildNodes().item(0).getNodeValue();
+                    String description = xCalDescription.item(0).getChildNodes().item(0).getNodeValue();
+                    String time_start = localStart.item(0).getChildNodes().item(0).getNodeValue();
+                    String time_end = localEnd.item(0).getChildNodes().item(0).getNodeValue();
+
+                    for (int j = 0; j < customFields.getLength(); j++) {
+                        Element e2 = (Element) customFields.item(j);
+                        if (e2.getAttributes().getNamedItem("name").getNodeValue().equals(TAG_ADDRESS)) {
+                            address = e2.getChildNodes().item(0).getNodeValue();
+                        }
+
+                        if (e2.getAttributes().getNamedItem("name").getNodeValue().equals(TAG_IMAGE)) {
+                            image = e2.getChildNodes().item(0).getNodeValue();
+                        }
+
+                        if (e2.getAttributes().getNamedItem("name").getNodeValue().equals(TAG_BOOKING)) {
+                            booking = e2.getChildNodes().item(0).getNodeValue();
+                        }
+
+                        if (e2.getAttributes().getNamedItem("name").getNodeValue().equals(TAG_COST)) {
+                            cost = e2.getChildNodes().item(0).getNodeValue();
+                        }
+
+                        if (e2.getAttributes().getNamedItem("name").getNodeValue().equals(TAG_MEETING_POINT)) {
+                            meeting_point = e2.getChildNodes().item(0).getNodeValue();
+                        }
+
+                        if (e2.getAttributes().getNamedItem("name").getNodeValue().equals(TAG_REQUIREMENTS)) {
+                            requirements = e2.getChildNodes().item(0).getNodeValue();
+                        }
+
+                    }
+
+                    RSSItem rssItem = new RSSItem(title, link, address, date, booking, guid, image,
+                            cost, meeting_point, requirements, description, time_start, time_end);
+
+                    if (title.toLowerCase().contains(query)
+                            || address.toLowerCase().contains(query)
+                            || date.toLowerCase().contains(query)) {
+
+                        // adding item to list
+                        itemsList.add(rssItem);
+                    }
+                }
+            }catch(Exception e){
+                // Check log for errors
+                e.printStackTrace();
+            }
+        }
+
+        // return item list
+        return itemsList;
     }
 }

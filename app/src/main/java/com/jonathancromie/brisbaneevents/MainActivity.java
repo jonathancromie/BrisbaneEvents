@@ -3,6 +3,7 @@ package com.jonathancromie.brisbaneevents;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.app.usage.UsageEvents;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -18,9 +19,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -53,13 +56,12 @@ public class MainActivity extends AppCompatActivity {
     private String name = "Events in Brisbane";
     private String email = "Send feedback to joncromie@gmail.com";
     private int profile = R.mipmap.ic_launcher;
+
     // Array list for list view
     ArrayList<HashMap<String, String>> rssFeedList = new ArrayList<HashMap<String, String>>();
 
     // array to trace sqlite ids
-    String[] sqliteIds;
-    // Progress Dialog
-    private ProgressDialog pDialog;
+    int[] sqliteIds;
 
     private Toolbar toolbar;
 
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
 
         mTitles = getResources().getStringArray(R.array.titles);
-        mIcons = getResources().obtainTypedArray(R.array.icons);
+        mIcons = getResources().obtainTypedArray(R.array.drawer_icons);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
@@ -93,13 +95,10 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.left_drawer);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setLayoutManager(mLayoutManager);
 //        mRecyclerView.setHasFixedSize(true);
         mAdapter = new CustomDrawerAdapter(mTitles, mIcons, name, email, profile, this);
         mRecyclerView.setAdapter(mAdapter);
-
-//        mRecyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL_LIST));
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
@@ -140,22 +139,6 @@ public class MainActivity extends AppCompatActivity {
         new loadStoreSites().execute();
 
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    // Use this when sort button is on toolbar
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        // If the nav drawer is open, hide action items related to the content view
-//        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mRecyclerView);
-//        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-//        return super.onPrepareOptionsMenu(menu);
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -219,12 +202,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            pDialog = new ProgressDialog(
-//                    MainActivity.this);
-//            pDialog.setMessage("Loading sites ...");
-//            pDialog.setIndeterminate(false);
-//            pDialog.setCancelable(false);
-//            pDialog.show();
         }
 
         /**
@@ -302,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                     // listing all websites from SQLite
                     List<Website> siteList = rssDb.getAllSites();
 
-                    sqliteIds = new String[siteList.size()];
+                    sqliteIds = new int[siteList.size()];
 
                     // loop through each website
                     for (int i = 0; i < siteList.size(); i++) {
@@ -322,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // add sqlite id to array
                         // used when deleting a website from sqlite
-                        sqliteIds[i] = s.getId().toString();
+                        sqliteIds[i] = s.getId();
                     }
                 }
             });
@@ -334,7 +311,6 @@ public class MainActivity extends AppCompatActivity {
          * **/
         protected void onPostExecute(String args) {
             // dismiss the dialog after getting all products
-//            pDialog.dismiss();
             EventFragment fragment = new EventFragment();
             Bundle bundle = new Bundle();
             bundle.putInt(EventFragment.ARG_PAGE, 1);

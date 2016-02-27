@@ -55,9 +55,6 @@ public class CustomDrawerAdapter extends RecyclerView.Adapter<CustomDrawerAdapte
         public ViewHolder(View itemView, int ViewType) {                 // Creating ViewHolder Constructor with View and viewType As a parameter
             super(itemView);
             // Here we set the appropriate view in accordance with the the view type as passed when the holder object is created
-
-
-
             if(ViewType == TYPE_ITEM) {
                 textView = (TextView) itemView.findViewById(R.id.rowText); // Creating TextView object with the id of textView from item_row.xml
                 icon = (ImageView) itemView.findViewById(R.id.rowIcon);// Creating ImageView object with the id of ImageView from item_row.xml

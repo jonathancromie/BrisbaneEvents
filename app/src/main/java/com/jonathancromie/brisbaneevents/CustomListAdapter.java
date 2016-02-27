@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +28,10 @@ import java.util.List;
  */
 public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.DataObjectHolder> {
     private List<RSSItem> mDataset;
+    private List<RSSItem> visibleObjects;
 
     public CustomListAdapter(List<RSSItem> myDataset) {
-        mDataset = myDataset;
+        this.mDataset = myDataset;
 
     }
 
@@ -48,6 +51,15 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
             textDate = (TextView) itemView.findViewById(R.id.date);
             textAddress = (TextView) itemView.findViewById(R.id.address);
         }
+
+        public void bind(RSSItem model) {
+            Context context = imageView.getContext();
+            Picasso.with(context).load(model.getImage()).resize(75, 75).placeholder(R.drawable.ic_photo_camera_black_24dp).error(R.drawable.ic_photo_camera_black_24dp).into(imageView);
+            textLink.setText(model.getLink());
+            textTitle.setText(model.getTitle());
+            textAddress.setText(model.getAddress());
+            textDate.setText(model.getDate());
+        }
     }
 
 
@@ -57,29 +69,29 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Da
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rss_item_list_row, parent, false);
-
-        DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
-        return dataObjectHolder;
+        return new DataObjectHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
-        Context context = holder.imageView.getContext();
-
-        Picasso.with(context).load(mDataset.get(position).getImage()).resize(75, 75).placeholder(R.drawable.ic_photo_camera_black_24dp).error(R.drawable.ic_photo_camera_black_24dp).into(holder.imageView);
-        holder.textLink.setText(mDataset.get(position).getLink());
-        holder.textTitle.setText(mDataset.get(position).getTitle());
-        holder.textAddress.setText(mDataset.get(position).getAddress());
-        holder.textDate.setText(mDataset.get(position).getDate());
-    }
-
-    public void addItem(RSSItem dataObj, int index) {
-        mDataset.add(dataObj);
-        notifyItemInserted(index);
+        final RSSItem model = mDataset.get(position);
+        holder.bind(model);
     }
 
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+
+    public void setFilter(List<RSSItem> items) {
+        mDataset = new ArrayList<>();
+        mDataset.addAll(items);
+        notifyDataSetChanged();
+    }
+
+    public void sort(Comparator<? super RSSItem> comparator) {
+        Collections.sort(mDataset, comparator);
+        notifyItemRangeChanged(0, getItemCount());
     }
 }

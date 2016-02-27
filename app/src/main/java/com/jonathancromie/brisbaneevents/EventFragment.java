@@ -9,10 +9,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,26 +26,21 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
-public class EventFragment extends Fragment {
+public class EventFragment extends Fragment implements SearchView.OnQueryTextListener {
     public static final String ARG_PAGE = "ARG_PAGE";
-
-    String link;
-    String title;
-    String address;
-    String date;
-    String booking;
-    String image;
-    String cost;
-    String meeting_point;
-    String requirements;
-    String description;
-    String time_start;
-    String time_end;
 
     private static String TAG_TITLE = "title";
     private static String TAG_LINK = "link";
@@ -79,7 +80,8 @@ public class EventFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_event, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
@@ -144,6 +146,128 @@ public class EventFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+
+        final MenuItem item = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(this);
+
+        MenuItemCompat.setOnActionExpandListener(item,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        // Do something when collapsed
+                        adapter.setFilter(rssItems);
+                        return true; // Return true to collapse action view
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        // Do something when expanded
+                        return true; // Return true to expand action view
+                    }
+                });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_sort_title:
+                sortTitle();
+                return true;
+            case R.id.action_sort_date:
+                sortDate();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void sortTitle() {
+        progressBar.setVisibility(View.VISIBLE);
+        animation.start ();
+        Collections.sort(rssItems, new Comparator<RSSItem>() {
+
+            @Override
+            public int compare(RSSItem lhs, RSSItem rhs) {
+                return lhs.getTitle().compareTo(rhs.getTitle());
+            }
+        });
+        progressBar.clearAnimation();
+        progressBar.setVisibility(View.INVISIBLE);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void sortDate() {
+        progressBar.setVisibility(View.VISIBLE);
+        animation.start ();
+        Collections.sort(rssItems, new Comparator<RSSItem>() {
+
+            @Override
+            public int compare(RSSItem lhs, RSSItem rhs) {
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String str1 = lhs.getTimeStart();
+                str1 = str1.replace("T", " ");
+                String str2 = rhs.getTimeStart();
+                str2 = str2.replace("T", " ");
+
+                Date date1 = null;
+                Date date2 = null;
+                try {
+                    date1 = df.parse(str1);
+                    date2 = df.parse(str2);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                return date1.compareTo(date2);
+            }
+        });
+        progressBar.clearAnimation();
+        progressBar.setVisibility(View.INVISIBLE);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        // Here is where we are going to implement our filter logic
+        final List<RSSItem> filteredModeList = filter(rssItems, query);
+        adapter.setFilter(filteredModeList);
+
+        return true;
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    private List<RSSItem> filter(List<RSSItem> models, String query) {
+        query = query.toLowerCase();
+
+        final List<RSSItem> filteredModelList = new ArrayList<>();
+        for (RSSItem model : models) {
+            final String title = model.getTitle().toLowerCase();
+            final String address = model.getAddress().toLowerCase();
+            if (title.contains(query) || address.contains(query)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
+    }
+
+
+
     /**
      * Background Async Task to get RSS Feed Items data from URL
      * */
@@ -185,18 +309,6 @@ public class EventFragment extends Fragment {
 
                 // adding HashList to ArrayList
                 rssItemList.add(map);
-
-                link = item.getLink();
-                title = item.getTitle();
-                address = item.getAddress();
-                date = item.getDate();
-                booking = item.getBooking();
-                image = item.getImage();
-                cost = item.getCost();
-                meeting_point = item.getMeetingPoint();
-                requirements = item.getRequirements();
-                time_start = item.getTimeStart();
-                time_end = item.getTimeEnd();
             }
 
 
@@ -214,7 +326,6 @@ public class EventFragment extends Fragment {
             layoutManager = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setAdapter(adapter);
-
         }
     }
 }

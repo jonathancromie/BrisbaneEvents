@@ -13,7 +13,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="@string/event_image" />
+        android:contentDescription="@string/event_image"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:layout_width="wrap_content"

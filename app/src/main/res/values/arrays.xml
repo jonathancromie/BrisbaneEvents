@@ -34,7 +34,7 @@
         <item>Visible Ink</item>
     </string-array>
 
-    <string-array name="icons">
+    <string-array name="drawer_icons">
         <item>@drawable/ic_tree_silhouette</item>
         <item>@drawable/ic_painter_palette</item>
         <item>@drawable/ic_nature_people_white_24dp</item>
@@ -66,4 +66,5 @@
         <item>@drawable/ic_face_white_24dp</item>
         <item>@drawable/ic_home_page</item>
     </string-array>
+
 </resources>
