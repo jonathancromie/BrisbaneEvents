@@ -322,7 +322,7 @@ public class EventFragment extends Fragment implements SearchView.OnQueryTextLis
             progressBar.clearAnimation();
             progressBar.setVisibility(View.INVISIBLE);
 
-            adapter = new CustomListAdapter(rssItems);
+            adapter = new CustomListAdapter(rssItems, getContext());
             layoutManager = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setAdapter(adapter);

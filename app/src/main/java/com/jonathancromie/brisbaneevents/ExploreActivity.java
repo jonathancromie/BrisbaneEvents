@@ -102,7 +102,7 @@ public class ExploreActivity extends AppCompatActivity {
             }
         });
 
-        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView = (ImageView) findViewById(R.id.eventImage);
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
