@@ -1,6 +1,8 @@
 package com.jonathancromie.brisbaneevents;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,7 @@ import java.util.List;
 /**
  * Created by jonathancromie on 27/02/2016.
  */
-public class CustomExploreAdapter extends RecyclerView.Adapter<CustomExploreAdapter.ViewHolder>{
+public class CustomExploreAdapter extends RecyclerView.Adapter<CustomExploreAdapter.ViewHolder> {
 
     List<Event> events = new ArrayList<Event>();
 
@@ -34,12 +36,22 @@ public class CustomExploreAdapter extends RecyclerView.Adapter<CustomExploreAdap
     }
 
     @Override
-    public void onBindViewHolder(CustomExploreAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final CustomExploreAdapter.ViewHolder holder, int position) {
         holder.description.setText(events.get(position).getDescription());
         holder.date.setText(events.get(position).getDate());
         holder.address.setText(events.get(position).getAddress());
         holder.cost.setText(events.get(position).getCost());
         holder.note.setText(events.get(position).getNote());
+
+        holder.address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + holder.address.getText().toString());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                v.getContext().startActivity(mapIntent);
+            }
+        });
     }
 
     @Override
