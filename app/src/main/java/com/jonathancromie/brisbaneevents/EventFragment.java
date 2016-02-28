@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -59,13 +60,14 @@ public class EventFragment extends Fragment implements SearchView.OnQueryTextLis
 
     List<RSSItem> rssItems = new ArrayList<RSSItem>();
 
+    private SwipeRefreshLayout swipeContainer;
     private RecyclerView mRecyclerView;
     private CustomListAdapter adapter;
     private LinearLayoutManager layoutManager;
 
     // Progress Dialog
 //    private ProgressDialog pDialog;
-    ProgressBar progressBar;
+//    ProgressBar progressBar;
     ObjectAnimator animation;
 
     @Override
@@ -82,6 +84,9 @@ public class EventFragment extends Fragment implements SearchView.OnQueryTextLis
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+//        adapter = new CustomListAdapter(rssItems, getContext());
+//        mRecyclerView.setAdapter(adapter);
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
@@ -118,15 +123,15 @@ public class EventFragment extends Fragment implements SearchView.OnQueryTextLis
                 })
         );
 
-        progressBar = (ProgressBar) getActivity().findViewById(R.id.progressBar);
+//        progressBar = (ProgressBar) getActivity().findViewById(R.id.progressBar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.circular_21));
+//            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.circular_21));
         }
 
 
 
-        animation = ObjectAnimator.ofInt (progressBar, "progress", 0, 500); // see this max value coming back here, we animale towards that value
+//        animation = ObjectAnimator.ofInt (progressBar, "progress", 0, 500); // see this max value coming back here, we animale towards that value
 
 
         // Getting Single website from SQLite
@@ -134,15 +139,34 @@ public class EventFragment extends Fragment implements SearchView.OnQueryTextLis
 
 
         Website site = rssDB.getSite(mPage);
-        String rss_link = site.getRSSLink();
+        final String rss_link = site.getRSSLink();
+
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+
+        swipeContainer.setColorSchemeColors(getContext().getResources().getColor(R.color.colorAccent));
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                new loadRSSFeedItems().execute(rss_link);
+            }
+        });
+
+
+        swipeContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeContainer.setRefreshing(true);
+            }
+        });
 //        /**
 //         * Calling a backgroung thread will loads recent articles of a website
 //         * @param rss url of website
 //         * */
         new loadRSSFeedItems().execute(rss_link);
-
-
-
         return view;
     }
 
@@ -187,8 +211,8 @@ public class EventFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     private void sortTitle() {
-        progressBar.setVisibility(View.VISIBLE);
-        animation.start ();
+//        progressBar.setVisibility(View.VISIBLE);
+//        animation.start ();
         Collections.sort(rssItems, new Comparator<RSSItem>() {
 
             @Override
@@ -196,14 +220,14 @@ public class EventFragment extends Fragment implements SearchView.OnQueryTextLis
                 return lhs.getTitle().compareTo(rhs.getTitle());
             }
         });
-        progressBar.clearAnimation();
-        progressBar.setVisibility(View.INVISIBLE);
+//        progressBar.clearAnimation();
+//        progressBar.setVisibility(View.INVISIBLE);
         adapter.notifyDataSetChanged();
     }
 
     private void sortDate() {
-        progressBar.setVisibility(View.VISIBLE);
-        animation.start ();
+//        progressBar.setVisibility(View.VISIBLE);
+//        animation.start ();
         Collections.sort(rssItems, new Comparator<RSSItem>() {
 
             @Override
@@ -226,8 +250,8 @@ public class EventFragment extends Fragment implements SearchView.OnQueryTextLis
                 return date1.compareTo(date2);
             }
         });
-        progressBar.clearAnimation();
-        progressBar.setVisibility(View.INVISIBLE);
+//        progressBar.clearAnimation();
+//        progressBar.setVisibility(View.INVISIBLE);
         adapter.notifyDataSetChanged();
     }
 
@@ -279,8 +303,8 @@ public class EventFragment extends Fragment implements SearchView.OnQueryTextLis
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
-            animation.start ();
+//            progressBar.setVisibility(View.VISIBLE);
+//            animation.start ();
         }
 
         /**
@@ -319,13 +343,18 @@ public class EventFragment extends Fragment implements SearchView.OnQueryTextLis
          * After completing background task Dismiss the progress dialog
          * **/
         protected void onPostExecute(String args) {
-            progressBar.clearAnimation();
-            progressBar.setVisibility(View.INVISIBLE);
+//            progressBar.clearAnimation();
+//            progressBar.setVisibility(View.INVISIBLE);
+
+//            adapter.clear();
+//            adapter.addAll(rssItems);
+//            swipeContainer.setRefreshing(false);
 
             adapter = new CustomListAdapter(rssItems, getContext());
             layoutManager = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setAdapter(adapter);
+            swipeContainer.setRefreshing(false);
         }
     }
 }

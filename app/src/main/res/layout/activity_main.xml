@@ -48,17 +48,6 @@
                 ads:adSize="BANNER"
                 ads:adUnitId="@string/banner_ad_unit_id"
                 android:layout_gravity="center_horizontal|bottom"/>
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:duration="1"
-                android:indeterminate="true"
-                android:indeterminateDrawable="@drawable/circular"
-                android:layout_gravity="center" />
         </RelativeLayout>
     </LinearLayout>
 

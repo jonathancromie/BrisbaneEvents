@@ -76,8 +76,15 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
         notifyDataSetChanged();
     }
 
-    public void sort(Comparator<? super RSSItem> comparator) {
-        Collections.sort(mDataset, comparator);
-        notifyItemRangeChanged(0, getItemCount());
+    // Clean all elements of the recycler
+    public void clear() {
+        mDataset.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items
+    public void addAll(List<RSSItem> list) {
+        mDataset.addAll(list);
+        notifyDataSetChanged();
     }
 }
