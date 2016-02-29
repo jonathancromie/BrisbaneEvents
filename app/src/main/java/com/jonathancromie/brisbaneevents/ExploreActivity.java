@@ -116,7 +116,12 @@ public class ExploreActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         Context context = imageView.getContext();
-        Picasso.with(context).load(image).resize(metrics.widthPixels, metrics.heightPixels / 2).into(imageView);
+        if (!image.isEmpty()
+                || image.length() != 0
+                || image != null
+                || !isWhiteSpace(image)) {
+            Picasso.with(context).load(image).resize(metrics.widthPixels, metrics.heightPixels / 2).into(imageView);
+        }
     }
 
     public void addToCalendar(String start, String end) {
@@ -202,5 +207,9 @@ public class ExploreActivity extends AppCompatActivity {
 //        transaction..replace(android.R.id.content, newFragment)
 //                .addToBackStack(null).commit();
         transaction.add(newFragment, "dialog").commit();
+    }
+
+    public boolean isWhiteSpace(String str) {
+        return str.matches("^\\s*$");
     }
 }

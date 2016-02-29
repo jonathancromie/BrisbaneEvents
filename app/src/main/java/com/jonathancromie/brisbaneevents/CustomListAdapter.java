@@ -40,7 +40,12 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
 
     @Override
     public void onBindViewHolder(final CustomListAdapter.ViewHolder holder, final int position) {
-        Picasso.with(mContext).load(mDataset.get(position).getImage()).resize(75, 75).placeholder(R.drawable.ic_photo_camera_black_24dp).error(R.drawable.ic_photo_camera_black_24dp).into(holder.eventImage);
+        if (!mDataset.get(position).getImage().isEmpty()
+                || mDataset.get(position).getImage().length() != 0
+                || mDataset.get(position).getImage() != null
+                || !isWhiteSpace(mDataset.get(position).getImage())) {
+            Picasso.with(mContext).load(mDataset.get(position).getImage()).resize(75, 75).placeholder(R.drawable.ic_photo_camera_black_24dp).error(R.drawable.ic_photo_camera_black_24dp).into(holder.eventImage);
+        }
         holder.textLink.setText(mDataset.get(position).getLink());
         holder.textTitle.setText(mDataset.get(position).getTitle());
         holder.textAddress.setText(mDataset.get(position).getAddress());
@@ -86,5 +91,9 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
     public void addAll(List<RSSItem> list) {
         mDataset.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public boolean isWhiteSpace(String str) {
+        return str.matches("^\\s*$");
     }
 }
